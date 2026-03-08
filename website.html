@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ahmet Emin Memis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;1,14..32,300&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #14120e;
+      --text: #6c675d;
+      --bright: #d0c8b8;
+      --dim: #3e3830;
+      --dimmer: #4e433c;
+      --rule: #2a2420;
+      --bio: #60584e;
+      --toggle-active-bg: #1e1c18;
+      --toggle-active-text: #d0c8b8;
+    }
+
+    [data-theme="light"] {
+      --bg: #f0ece2;
+      --text: #403b33;
+      --bright: #1a1814;
+      --dim: #b0a898;
+      --dimmer: #9c9689;
+      --rule: #ddd8cc;
+      --bio: #9a9288;
+      --toggle-active-bg: #e4e0d4;
+      --toggle-active-text: #1a1814;
+    }
+
+    [data-theme="wild"] {
+      --bg: #0e0e12;
+      --text: #9f9f9f;
+      --bright: #ffffff;
+      --dim: #444;
+      --dimmer: #333;
+      --rule: #333;
+      --bio: #888;
+      --toggle-active-bg: #1a1a20;
+      --toggle-active-text: #fff;
+    }
+
+    * {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    body {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 8rem;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--bright);
+    }
+
+    .bl::before {
+      content: '[ ';
+      color: var(--dim);
+      transition: color 0.15s, font-size 0.15s, letter-spacing 0.15s;
+    }
+
+    .bl::after {
+      content: ' ]';
+      color: var(--dim);
+      transition: color 0.15s, font-size 0.15s, letter-spacing 0.15s;
+    }
+
+    a.bl:hover {
+      color: var(--bright);
+    }
+
+    a.bl:hover::before,
+    a.bl:hover::after {
+      color: var(--text);
+      letter-spacing: 0.06em;
+    }
+
+    .item:hover .i-title::before,
+    .item:hover .i-title::after {
+      color: var(--text);
+      letter-spacing: 0.06em;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4rem;
+      font-size: 0.95rem;
+      color: var(--dim);
+    }
+
+    .topbar .name {
+      font-weight: 400;
+      color: var(--bright);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .clock-wrap {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .night-note {
+      font-size: 0.7rem;
+      color: var(--dim);
+      font-style: italic;
+      letter-spacing: 0.04em;
+      display: none;
+    }
+
+    .night-note.visible {
+      display: inline;
+    }
+
+    .theme-switch {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .theme-switch .th-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      min-width: 2.2rem;
+      text-align: right;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .theme-track {
+      position: relative;
+      width: 48px;
+      height: 16px;
+      border: 1px solid var(--dimmer);
+      cursor: pointer;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      padding: 0 2px;
+    }
+
+    .theme-knob {
+      width: 10px;
+      height: 10px;
+      background: var(--text);
+      position: absolute;
+      left: 3px;
+      transition: left 0.2s ease, background 0.2s;
+    }
+
+    .photo-float {
+      float: right;
+      margin: 0 0 1.5rem 2rem;
+      width: 200px;
+      height: 200px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .photo-float img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(15%);
+    }
+
+    .clearfix::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .toggle {
+      display: flex;
+      gap: 0;
+      margin-top: 7.5rem;
+      margin-bottom: 3.5rem;
+      border: 1px solid var(--rule);
+      width: fit-content;
+    }
+
+    .toggle-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      background: none;
+      border: none;
+      border-right: 1px solid var(--rule);
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .toggle-btn:last-child {
+      border-right: none;
+    }
+
+    .toggle-btn:hover {
+      color: var(--text);
+    }
+
+    .toggle-btn.active {
+      color: var(--toggle-active-text);
+      background: var(--toggle-active-bg);
+    }
+
+    .block {
+      margin-bottom: 3rem;
+    }
+
+    .block[data-id].hidden {
+      display: none;
+    }
+
+    .name-block .title {
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--bright);
+      line-height: 1.3;
+    }
+
+    .name-block .role {
+      font-size: 0.82rem;
+      color: var(--dim);
+      letter-spacing: 0.06em;
+      margin-top: 0.5rem;
+    }
+
+    .bio {
+      font-size: 1rem;
+      color: var(--bio);
+      font-style: italic;
+      line-height: 2;
+      max-width: 38ch;
+    }
+
+    .sec {
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 1.1rem;
+    }
+
+    .item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 1.3rem;
+      line-height: 1.3;
+      text-decoration: none;
+    }
+
+    .item .i-title {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .item .i-title::before {
+      content: '[ ';
+      color: var(--dim);
+      transition: color 0.15s, letter-spacing 0.15s;
+    }
+
+    .item .i-title::after {
+      content: ' ]';
+      color: var(--dim);
+      transition: color 0.15s, letter-spacing 0.15s;
+    }
+
+    .item:hover .i-title {
+      color: var(--bright);
+    }
+
+    .i-year {
+      font-size: 0.7rem;
+      color: var(--dim);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .item:hover .i-year {
+      color: var(--text);
+    }
+
+    .item-plain {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .item-plain .i-title {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .item-plain .i-title::before {
+      content: '[ ';
+      color: var(--dim);
+    }
+
+    .item-plain .i-title::after {
+      content: ' ]';
+      color: var(--dim);
+    }
+
+    .pub {
+      margin-bottom: 1.4rem;
+      padding-left: 0.8rem;
+      border-left: 1px solid var(--rule);
+    }
+
+    .pub .p-title {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .pub .p-meta {
+      font-size: 0.68rem;
+      color: var(--dim);
+      letter-spacing: 0.04em;
+      margin-top: 0.2rem;
+    }
+
+    .interests {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 3rem;
+      color: var(--dimmer);
+      line-height: 2.8;
+    }
+
+    .interests span {
+      margin-right: 1rem;
+    }
+
+    .contact-line {
+      font-size: 0.85rem;
+      color: var(--text);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+    }
+
+    .contact-line .dot {
+      color: var(--dim);
+      margin: 0 0.5rem;
+    }
+
+    .foot {
+      margin-top: 5rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--dimmer);
+    }
+
+    [data-theme="wild"] .name {
+      color: #fff !important;
+    }
+
+    [data-theme="wild"] .bio {
+      color: #aaa;
+    }
+
+    .topbar,
+    .toggle,
+    .photo-block,
+    .block {
+      animation: up 0.45s ease both;
+    }
+
+    .topbar {
+      animation-delay: 0.00s;
+    }
+
+    .photo-block {
+      animation-delay: 0.04s;
+    }
+
+    .toggle {
+      animation-delay: 0.07s;
+    }
+
+    .block:nth-child(4) {
+      animation-delay: 0.10s;
+    }
+
+    .block:nth-child(5) {
+      animation-delay: 0.13s;
+    }
+
+    .block:nth-child(6) {
+      animation-delay: 0.16s;
+    }
+
+    .block:nth-child(7) {
+      animation-delay: 0.19s;
+    }
+
+    .block:nth-child(8) {
+      animation-delay: 0.22s;
+    }
+
+    .block:nth-child(9) {
+      animation-delay: 0.25s;
+    }
+
+    .block:nth-child(10) {
+      animation-delay: 0.28s;
+    }
+
+    /* ── BACKGROUND / CV ── */
+    .cv-entry {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .cv-role {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .cv-org {
+      font-size: 0.75rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+
+    .cv-year {
+      font-size: 0.7rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .cv-dot {
+      color: var(--dim);
+      margin: 0 0.2rem;
+    }
+
+    .cv-sub {
+      font-size: 0.72rem;
+      color: var(--dim);
+      margin-top: 0.2rem;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      max-width: 52ch;
+    }
+
+    .cv-projects {
+      margin-top: 0.4rem;
+      margin-bottom: 0.8rem;
+      padding-left: 0.8rem;
+      border-left: 1px solid var(--rule);
+    }
+
+    .cv-project {
+      font-size: 0.8rem;
+      color: var(--dim);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+
+    .cv-project .placeholder {
+      opacity: 0.4;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-style: normal;
+    }
+
+    .sec-sub {
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dimmer);
+      margin-bottom: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    .sec-sub:first-of-type {
+      margin-top: 0;
+    }
+
+    @keyframes melt {
+      0% {
+        transform: rotate(0deg) skew(0deg, 0deg) scale(1.00);
+        filter: grayscale(15%) hue-rotate(0deg);
+      }
+
+      15% {
+        transform: rotate(1.5deg) skew(2deg, 1deg) scale(1.02);
+        filter: grayscale(0%) hue-rotate(40deg);
+      }
+
+      30% {
+        transform: rotate(-1deg) skew(-1deg, 2.5deg) scale(0.98);
+        filter: grayscale(0%) hue-rotate(100deg);
+      }
+
+      50% {
+        transform: rotate(2deg) skew(3deg, -1deg) scale(1.03);
+        filter: grayscale(0%) hue-rotate(200deg);
+      }
+
+      70% {
+        transform: rotate(-2deg) skew(-2deg, 1.5deg) scale(0.97);
+        filter: grayscale(0%) hue-rotate(280deg);
+      }
+
+      85% {
+        transform: rotate(1deg) skew(1.5deg, -2deg) scale(1.01);
+        filter: grayscale(0%) hue-rotate(330deg);
+      }
+
+      100% {
+        transform: rotate(0deg) skew(0deg, 0deg) scale(1.00);
+        filter: grayscale(15%) hue-rotate(360deg);
+      }
+    }
+
+    .photo-float img.melting {
+      animation: melt 20s ease-in-out infinite;
+    }
+
+    @keyframes up {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <span class="name">Ahmet Emin Memis</span>
+    <div class="topbar-right">
+      <div class="clock-wrap">
+        <span id="clock" style="font-size:0.8rem;">—</span><span class="night-note" id="nightNote">&nbsp;till
+          morning</span>
+      </div>
+      <div class="theme-switch">
+        <span class="th-label" id="themeLabel">dark</span>
+        <div class="theme-track" id="themeTrack">
+          <div class="theme-knob" id="themeKnob" data-pos="1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block name-block clearfix">
+    <div class="photo-float">
+      <img src="mephoto.png" alt="Photo of Me" />
+    </div>
+    <br><br>
+    <div class="title">data scientist<br>music technologist</div>
+    <div class="role">Oslo, Norway</div>
+  </div>
+
+  <div class="block bio">
+    hey, I'm Emin.<br>
+    I build things with data and sound<br>
+    sometimes separately, sometimes the same thing.<br>
+  </div>
+
+  <div class="toggle">
+    <button class="toggle-btn active" data-filter="all">all</button>
+    <button class="toggle-btn" data-filter="work">work</button>
+    <button class="toggle-btn" data-filter="publications">publications</button>
+    <button class="toggle-btn" data-filter="background">background</button>
+  </div>
+
+  <!-- WORK -->
+  <div class="block" data-id="work">
+    <div class="sec">work</div>
+    <a class="item" href="IEMA__Exploring_Complex_Data_Spaces_with_Body-Motion_Interaction.pdf" target="_blank">
+      <span class="i-title">Evolving sound clouds by moving through it</span> <span class="i-year">2024</span>
+    </a>
+    <a class="item" href="https://mct-master.github.io/interactive-music/2023/12/01/ahmetem-the-hyper-ney.html"
+      target="_blank">
+      <span class="i-title">The Hyper-Ney: An Enhanced Traditional Flute</span> <span class="i-year">2023</span>
+    </a>
+    <a class="item" href="https://mct-master.github.io/applied-project/2023/11/27/fabianst-intuitive-robotics.html"
+      target="_blank">
+      <span class="i-title">Painting through gestures with a robot arm</span> <span class="i-year">2023</span>
+    </a>
+    <a class="item" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html"
+      target="_blank">
+      <span class="i-title">A global telematic concert across four continents</span> <span class="i-year">2023</span>
+    </a>
+    <a class="item" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html"
+      target="_blank">
+      <span class="i-title">Jazz Over the Network at 184,000km/h</span> <span class="i-year">2023</span>
+    </a>
+    <a class="item" href="https://mct-master.github.io/motion-capture/2023/05/09/ahmetem-vocal-instrument-motion.html"
+      target="_blank">
+      <span class="i-title">Reshaping your voice through movement</span> <span class="i-year">2023</span>
+    </a>
+    <a class="item" href="https://mct-master.github.io/machine-learning/2023/04/25/ahmetem-whistling-autoencoders.html"
+      target="_blank">
+      <span class="i-title">Can a machine learn to whistle?</span> <span class="i-year">2023</span>
+    </a>
+    <a class="item" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html"
+      target="_blank">
+      <span class="i-title">Engineering a telematic concert behind the scenes</span> <span class="i-year">2022</span>
+    </a>
+    <a class="item"
+      href="https://mct-master.github.io/sound-programming/2022/12/09/kristeic-jackeh-ahmetem-sonification.html"
+      target="_blank">
+      <span class="i-title">Listening to a solar storm</span> <span class="i-year">2022</span>
+    </a>
+    <a class="item" href="https://www.uio.no/ritmo/english/news-and-events/blog/2022/ahmet-emin-memis/" target="_blank">
+      <span class="i-title">Clapping together without trying to</span> <span class="i-year">2022</span>
+    </a>
+    <a class="item" href="#" target="_blank">
+      <span class="i-title">RNN learned to play piano from chord sequences</span> <span class="i-year">2021</span>
+    </a>
+  </div>
+
+  <!-- PUBLICATIONS -->
+  <div class="block" data-id="publications">
+    <div class="sec">publications</div>
+    <div class="pub">
+      <div class="p-title">The Hyper-Ney: An Enhanced Traditional Flute <span class="i-year">2024</span></div>
+      <div class="p-meta">Conference on New Interfaces for Musical Expression · Utrecht</div>
+    </div>
+    <div class="pub">
+      <div class="p-title">IEMI: An Immersive, Evolving Motion-Controlled Installation <span class="i-year">2024</span>
+      </div>
+      <div class="p-meta">Sound and Music Computing Conference · Porto</div>
+    </div>
+    <div class="pub">
+      <div class="p-title">Participatory Applause: Interactions of Audience Members Clapping at the End of a Classical
+        Music Concert <span class="i-year">2022</span></div>
+      <div class="p-meta">Conference on Interdisciplinary Musicology · Edinburgh</div>
+    </div>
+    <div class="pub">
+      <div class="p-title">Piano Music Generation with a Text Based Musical Note Representation using LSTM Models <span
+          class="i-year">2021</span></div>
+      <div class="p-meta">IEEE Signal Processing and Communications Applications · Istanbul</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div class="block" data-id="background">
+    <div class="sec">background</div>
+
+    <div class="sec-sub"> </div>
+
+    <div class="cv-entry">
+      <span class="cv-role">MPhil Music, Communication & Technology</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">University of Oslo</span>
+      <span class="cv-year">2025</span>
+    </div>
+
+    <div class="cv-entry">
+      <span class="cv-role">BSc Computer Engineering</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">Ankara University</span>
+      <span class="cv-year">2021</span>
+    </div>
+
+    <div class="sec-sub">experience</div>
+
+    <div class="cv-entry">
+      <span class="cv-role">Data Analyst</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">Xeneta</span>
+      <span class="cv-year">2022 – present</span>
+    </div>
+    <div class="cv-sub">LLM-driven structured extraction and classification from unstructured freight data. AI strategy
+      and model evaluation across a fast-moving landscape. Data ingestion pipelines, freight analytics, and data
+      modeling.</div>
+
+    <div class="cv-entry">
+      <span class="cv-role">Graduate Research Student</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">University of Oslo · RITMO</span>
+      <span class="cv-year">2021 – 2022</span>
+    </div>
+    <div class="cv-sub">Analysis of time-series motion and audio data to study rhythmic synchrony and collective
+      movement dynamics.</div>
+
+    <div class="cv-entry">
+      <span class="cv-role">Machine Learning Trainee</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">Xena Vision</span>
+      <span class="cv-year">2021</span>
+    </div>
+    <div class="cv-sub">Real-time emergency detection from human and vehicle activity using ML and multimedia data.
+    </div>
+
+    <div class="cv-entry">
+      <span class="cv-role">Student Researcher</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">Ankara University</span>
+      <span class="cv-year">2020 – 2021</span>
+    </div>
+    <div class="cv-sub">Music synthesis with ML: piano generation using deep sequential networks.</div>
+
+    <div class="cv-entry">
+      <span class="cv-role">Assistant Software Engineer</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">Softtech</span>
+      <span class="cv-year">2019</span>
+    </div>
+    <div class="cv-sub">Batch applications and data pipelines for banking systems. Database compatibility checks across
+      internal data sources.</div>
+
+    <div class="cv-entry">
+      <span class="cv-role">Video Editor & Documentary Maker</span>
+      <span class="cv-dot">·</span>
+      <span class="cv-org">ARH Media</span>
+      <span class="cv-year">2014 – 2019</span>
+    </div>
+    <div class="cv-sub">Production and post-production of televised documentaries and TV shows. Shooting tours across
+      20+ countries.</div>
+
+  </div>
+
+  <div class="block interests">
+    <span>travels</span>
+    <span>music</span>
+    <span>photographs</span>
+    <span>nature</span>
+    <span>sailing</span>
+    <span>side quests</span>
+  </div>
+
+  <div class="block contact-line">
+    <a class="bl" href="https://github.com/eminmemis" target="_blank">github</a>
+    <span class="dot">·</span>
+    <a class="bl" href="https://www.linkedin.com/in/aememis" target="_blank">linkedin</a>
+    <span class="dot">·</span>
+    <a class="bl" href="/cdn-cgi/l/email-protection#bbdad3d6decfded6d2d5d6ded6d2c8fbdcd6dad2d795d8d4d6">email</a>
+  </div>
+
+  <div class="foot">
+    <span id="location-age">Oslo · <span id="age">—</span></span>
+    <span id="week-seed">—</span>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+    function calculateAge(birthDate) {
+      const now = new Date();
+      let age = now.getFullYear() - birthDate.getFullYear();
+      const m = now.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && now.getDate() < birthDate.getDate())) age--;
+      return age;
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      const birthDate = new Date(1998, 1, 26);
+      document.getElementById('age').textContent = calculateAge(birthDate);
+    });
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function tick() {
+      const now = new Date();
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const clockEl = document.getElementById('clock');
+      const nightNote = document.getElementById('nightNote');
+      if (h >= 20 || h < 8) {
+        const next8 = new Date(now);
+        if (h >= 20) next8.setDate(next8.getDate() + 1);
+        next8.setHours(8, 0, 0, 0);
+        const secs = Math.floor((next8 - now) / 1000);
+        const ch = Math.floor(secs / 3600);
+        const cm = Math.floor((secs % 3600) / 60);
+        const cs = secs % 60;
+        clockEl.textContent = `${pad(ch)}:${pad(cm)}:${pad(cs)}`;
+        nightNote.classList.add('visible');
+      } else {
+        clockEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+        nightNote.classList.remove('visible');
+      }
+      const start = new Date(now.getFullYear(), 0, 0);
+      const week = Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
+      document.getElementById('week-seed').textContent = `${now.getFullYear()}-W${pad(week)}`;
+    }
+    tick(); setInterval(tick, 1000);
+
+    // ── THEME TOGGLE — pendulum ──
+    const themes = ['light', 'dark', 'wild'];
+    const labels = ['light', 'dark', 'wtf?!'];
+    const knobPositions = [3, 19, 35];
+    let themeIdx = 1;
+    let direction = -1;
+
+    const track = document.getElementById('themeTrack');
+    const knob = document.getElementById('themeKnob');
+    const label = document.getElementById('themeLabel');
+
+    // ── WTF SOUNDSCAPE ──
+    let audioCtx = null;
+    let soundNodes = [];
+    let toneTimeouts = [];
+
+    function buildReverb(ctx) {
+      const len = ctx.sampleRate * 4;
+      const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (let c = 0; c < 2; c++) {
+        const d = buf.getChannelData(c);
+        for (let i = 0; i < len; i++) {
+          d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.5);
+        }
+      }
+      const conv = ctx.createConvolver();
+      conv.buffer = buf;
+      return conv;
+    }
+
+    function startSoundscape() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const master = audioCtx.createGain();
+      master.gain.setValueAtTime(0.0, audioCtx.currentTime);
+      master.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 3);
+      master.connect(audioCtx.destination);
+      soundNodes.push(master);
+
+      const reverb = buildReverb(audioCtx);
+      reverb.connect(master);
+      soundNodes.push(reverb);
+
+      const dryGain = audioCtx.createGain();
+      dryGain.gain.value = 0.15;
+      dryGain.connect(master);
+
+      const bufSize = audioCtx.sampleRate * 2;
+      const noiseBuf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+      const nd = noiseBuf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) nd[i] = Math.random() * 2 - 1;
+
+      const noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuf;
+      noiseSource.loop = true;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 300;
+      filter.Q.value = 1.2;
+
+      const lfo = audioCtx.createOscillator();
+      lfo.frequency.value = 0.08;
+      const lfoGain = audioCtx.createGain();
+      lfoGain.gain.value = 220;
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+      lfo.start();
+
+      const windGain = audioCtx.createGain();
+      windGain.gain.value = 0.5;
+
+      noiseSource.connect(filter);
+      filter.connect(windGain);
+      windGain.connect(reverb);
+      windGain.connect(dryGain);
+      noiseSource.start();
+      soundNodes.push(noiseSource, filter, lfo, lfoGain, windGain, dryGain);
+
+      const baseFreqs = [1840, 2300, 3100, 2700, 1600, 4100, 3600];
+
+      function spawnTone() {
+        if (!audioCtx || audioCtx.state === 'closed') return;
+
+        const next = (3 + Math.random() * 9) * 1000;
+        const t = setTimeout(spawnTone, next);
+        toneTimeouts.push(t);
+
+        if (Math.random() < 0.3) return;
+
+        const freq = baseFreqs[Math.floor(Math.random() * baseFreqs.length)]
+          + (Math.random() - 0.5) * 180;
+        const now = audioCtx.currentTime;
+
+        const A = 0.08 + Math.random() * 0.08;
+        const D = 0.04 + Math.random() * 0.04;
+        const SL = 0.3 + Math.random() * 0.3;
+        const S = 0.4 + Math.random() * 0.4;
+        const R = 0.8 + Math.random() * 0.6;
+        const peak = 0.025 + Math.random() * 0.025;
+        const dur = A + D + S + R;
+
+        const osc = audioCtx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.linearRampToValueAtTime(freq + (Math.random() - 0.5) * 50, now + dur);
+
+        const env = audioCtx.createGain();
+        env.gain.setValueAtTime(0, now);
+        env.gain.linearRampToValueAtTime(peak, now + A);
+        env.gain.linearRampToValueAtTime(peak * SL, now + A + D);
+        env.gain.setValueAtTime(peak * SL, now + A + D + S);
+        env.gain.linearRampToValueAtTime(0, now + A + D + S + R);
+
+        osc.connect(env);
+        env.connect(reverb);
+        osc.start(now);
+        osc.stop(now + dur + 0.05);
+      }
+
+      [0, 3500, 8000, 14000].forEach(delay => {
+        const t = setTimeout(spawnTone, delay);
+        toneTimeouts.push(t);
+      });
+    }
+
+    function stopSoundscape() {
+      toneTimeouts.forEach(t => clearTimeout(t));
+      toneTimeouts = [];
+      if (audioCtx) {
+        soundNodes.forEach(n => { try { n.disconnect(); } catch (e) { } });
+        soundNodes = [];
+        audioCtx.close();
+        audioCtx = null;
+      }
+    }
+
+    // ── WTF POINT CLOUD ──
+    let cloudDots = [];
+    let cloudFrame = null;
+
+    function spawnCloud() {
+      const container = document.createElement('div');
+      container.id = 'point-cloud';
+      container.style.cssText = `
+        position: fixed; inset: 0; pointer-events: none; z-index: 50; overflow: hidden;
+      `;
+
+      const cloudWords = [
+        "data", "signal", "frequency", "oscillator", "synthesizer",
+        "rhythm", "motion", "network", "telematic", "latency",
+        "pipeline", "model", "cluster", "noise", "filter",
+        "extraction", "inference", "chord", "resonance", "gesture",
+        "instrument", "timbre", "feedback", "archive", "pattern",
+        "threshold", "pulse", "mapping", "sensor", "spectrum",
+        "dropout", "training", "encoding", "harmony", "feature",
+        "artifact", "drift", "tempo", "waveform", "activation",
+        "midi", "corpus", "embedding", "transient", "decay",
+        "node", "reverb", "onset", "trajectory", "variance"
+      ];
+
+      for (let i = 0; i < cloudWords.length; i++) {
+        const dot = document.createElement('div');
+        const size = 5 + Math.random() * 7;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const word = cloudWords[Math.floor(Math.random() * cloudWords.length)];
+
+        dot.dataset.word = word;
+        dot.style.cssText = `
+          position: absolute;
+          left: ${x}vw; top: ${y}vh;
+          width: ${size}px; height: ${size}px;
+          border-radius: 50%;
+          background: hsl(${Math.random() * 360}, 60%, 65%);
+          opacity: 0.18;
+          pointer-events: all;
+          cursor: default;
+          transition: opacity 0.2s, transform 0.2s;
+        `;
+
+        // drift state
+        dot._dx = 0; dot._dy = 0;
+        dot._vx = 0; dot._vy = 0;
+        dot._ox = x; dot._oy = y; // origin in vw/vh
+
+        const assignedWord = cloudWords[i % cloudWords.length];
+        let lastPlayed = 0;
+
+        dot.addEventListener('mouseenter', () => {
+          const now = Date.now();
+          if (now - lastPlayed < 1500) return;
+          lastPlayed = now;
+          dot.style.opacity = '0.75';
+          dot.style.transform = 'scale(2)';
+          const a = new Audio(`audio/${assignedWord}.mp3`);
+          a.volume = 0.2 + Math.random() * 0.3;
+          a.play().catch(() => { });
+        });
+
+        dot.addEventListener('mouseleave', () => {
+          dot.style.opacity = '0.18';
+          dot.style.transform = 'scale(1)';
+        });
+
+        container.appendChild(dot);
+        cloudDots.push(dot);
+      }
+
+      document.body.appendChild(container);
+
+      // animate dots
+      function driftFrame() {
+        cloudDots.forEach(d => {
+          d._vx += (Math.random() - 0.5) * 0.004;
+          d._vy += (Math.random() - 0.5) * 0.003;
+          const spd = Math.sqrt(d._vx * d._vx + d._vy * d._vy);
+          if (spd > 0.12) { d._vx *= 0.12 / spd; d._vy *= 0.12 / spd; }
+          d._vx -= d._dx * 0.0004;
+          d._vy -= d._dy * 0.0004;
+          d._dx += d._vx;
+          d._dy += d._vy;
+          d.style.left = `calc(${d._ox}vw + ${d._dx.toFixed(2)}px)`;
+          d.style.top = `calc(${d._oy}vh + ${d._dy.toFixed(2)}px)`;
+        });
+        cloudFrame = requestAnimationFrame(driftFrame);
+      }
+      cloudFrame = requestAnimationFrame(driftFrame);
+    }
+
+    function destroyCloud() {
+      if (cloudFrame) { cancelAnimationFrame(cloudFrame); cloudFrame = null; }
+      cloudDots = [];
+      const c = document.getElementById('point-cloud');
+      if (c) c.remove();
+    }
+    let wildFrame = null;
+    const wildOffsets = new Map();
+
+    function applyWildColors() {
+      document.querySelector('.photo-float img')?.classList.add('melting');
+      const els = document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests span, .cv-role');
+      els.forEach((el) => {
+        if (!wildOffsets.has(el)) {
+          wildOffsets.set(el, {
+            hue: Math.random() * 360,
+            speed: 0.2 + Math.random() * 0.8,
+            dir: Math.random() > 0.5 ? 1 : -1,
+            dx: 0, dy: 0,
+            vx: 0, vy: 0,
+          });
+        }
+        el.style.display = 'inline-block';
+        el.style.position = 'relative';
+      });
+
+      const bgState = {
+        hue: Math.random() * 360,
+        speed: 0.05 + Math.random() * 0.1,
+        dir: Math.random() > 0.5 ? 1 : -1
+      };
+
+      function frame() {
+        els.forEach(el => {
+          const s = wildOffsets.get(el);
+          // color
+          s.hue = (s.hue + s.speed * s.dir + 360) % 360;
+          el.style.color = `hsl(${s.hue}, 85%, 72%)`;
+          el.style.transition = 'none';
+          // independent random walk — tiny random nudge each frame
+          s.vx += (Math.random() - 0.5) * 0.006;
+          s.vy += (Math.random() - 0.5) * 0.004;
+          // soft speed cap
+          const spd = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
+          if (spd > 0.18) { s.vx *= 0.18 / spd; s.vy *= 0.18 / spd; }
+          // gentle pull back toward origin so they don't drift away
+          s.vx -= s.dx * 0.0006;
+          s.vy -= s.dy * 0.0006;
+          s.dx += s.vx;
+          s.dy += s.vy;
+          el.style.transform = `translate(${s.dx.toFixed(2)}px, ${s.dy.toFixed(2)}px)`;
+        });
+
+        const first = wildOffsets.get(els[0]);
+        if (first) knob.style.background = `hsl(${first.hue}, 85%, 72%)`;
+
+        bgState.hue = (bgState.hue + bgState.speed * bgState.dir + 360) % 360;
+        document.documentElement.style.setProperty('--bg', `hsl(${bgState.hue}, 18%, 10%)`);
+        document.documentElement.style.setProperty('--toggle-active-bg', `hsl(${bgState.hue}, 18%, 13%)`);
+
+        wildFrame = requestAnimationFrame(frame);
+      }
+
+      wildFrame = requestAnimationFrame(frame);
+    }
+
+    function clearWildColors() {
+      document.querySelector('.photo-float img')?.classList.remove('melting');
+      if (wildFrame) { cancelAnimationFrame(wildFrame); wildFrame = null; }
+      wildOffsets.clear();
+      document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests span, .cv-role').forEach(el => {
+        el.style.color = '';
+        el.style.transition = '';
+        el.style.transform = '';
+        el.style.position = '';
+        el.style.display = '';
+      });
+      knob.style.background = '';
+      document.documentElement.style.removeProperty('--bg');
+      document.documentElement.style.removeProperty('--toggle-active-bg');
+    }
+
+    function setTheme(idx) {
+      themeIdx = idx;
+      document.documentElement.setAttribute('data-theme', themes[idx]);
+      label.textContent = labels[idx];
+      knob.style.left = knobPositions[idx] + 'px';
+      if (idx === 2) { applyWildColors(); startSoundscape(); spawnCloud(); }
+      else { clearWildColors(); stopSoundscape(); destroyCloud(); }
+    }
+
+    function stepTheme() {
+      let next = themeIdx + direction;
+      if (next > 2) { direction = -1; next = themeIdx + direction; }
+      if (next < 0) { direction = 1; next = themeIdx + direction; }
+      setTheme(next);
+    }
+
+    setTheme(1);
+    track.addEventListener('click', stepTheme);
+
+    // ── FILTER TOGGLE ──
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        document.querySelectorAll('.block[data-id]').forEach(block => {
+          block.classList.toggle('hidden', f !== 'all' && block.dataset.id !== f);
+        });
+      });
+    });
+
+    // ── WEEK DRIFT ──
+    function sr(s) { let x = Math.sin(s + 1) * 10000; return x - Math.floor(x); }
+    function applyDrift() {
+      const now = new Date();
+      const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 1));
+      const week = Math.ceil(((now - start) / 86400000 + start.getUTCDay() + 1) / 7);
+      const S = now.getUTCFullYear() * 100 + week;
+      document.querySelectorAll('.block').forEach((el, i) => {
+        if (el.classList.contains('bio')) return;
+        const mb = 24 + sr(S + i * 9.1) * 22;
+        el.style.marginBottom = mb.toFixed(1) + 'px';
+      });
+    }
+    applyDrift();
+  </script>
+
+</body>
+
+</html>
