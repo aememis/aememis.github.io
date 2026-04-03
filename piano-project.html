@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RNN Classical Piano — Ahmet Emin Memis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;1,14..32,300&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #14120e;
+      --text: #8a8680;
+      --bright: #d0c8b8;
+      --dim: #3e3830;
+      --dimmer: #4e433c;
+      --rule: #2a2420;
+      --bio: #60584e;
+      --toggle-active-bg: #1e1c18;
+      --toggle-active-text: #d0c8b8;
+    }
+
+    [data-theme="light"] {
+      --bg: #f0ece2;
+      --text: #403b33;
+      --bright: #1a1814;
+      --dim: #b0a898;
+      --dimmer: #9c9689;
+      --rule: #ddd8cc;
+      --bio: #9a9288;
+      --toggle-active-bg: #e4e0d4;
+      --toggle-active-text: #1a1814;
+    }
+
+    [data-theme="wild"] {
+      --bg: #0e0e12;
+      --text: #9f9f9f;
+      --bright: #ffffff;
+      --dim: #444;
+      --dimmer: #333;
+      --rule: #333;
+      --bio: #888;
+      --toggle-active-bg: #1a1a20;
+      --toggle-active-text: #fff;
+    }
+
+    * {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    body {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 8rem;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--bright);
+    }
+
+    .bl::before {
+      content: '[ ';
+      color: var(--dim);
+      transition: color 0.15s, font-size 0.15s, letter-spacing 0.15s;
+    }
+
+    .bl::after {
+      content: ' ]';
+      color: var(--dim);
+      transition: color 0.15s, font-size 0.15s, letter-spacing 0.15s;
+    }
+
+    a.bl:hover {
+      color: var(--bright);
+    }
+
+    a.bl:hover::before,
+    a.bl:hover::after {
+      color: var(--text);
+      letter-spacing: 0.06em;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4rem;
+      font-size: 0.95rem;
+      color: var(--dim);
+    }
+
+    .topbar .name {
+      font-weight: 400;
+      color: var(--bright);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .back-link {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 3rem;
+    }
+
+    .back-link:hover {
+      color: var(--text);
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--bright);
+      line-height: 1.3;
+      margin-bottom: 1.2rem;
+    }
+
+    .project-meta {
+      font-size: 0.8rem;
+      color: var(--dim);
+      letter-spacing: 0.05em;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .project-image {
+      width: 100%;
+      margin: 2.5rem 0;
+      overflow: hidden;
+    }
+
+    .project-image img {
+      width: 100%;
+      display: block;
+      filter: grayscale(15%);
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--bright);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2rem;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      color: var(--dim);
+      letter-spacing: 0.16em;
+    }
+
+    .section-text {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 1.3rem;
+    }
+
+    .section-text strong {
+      color: var(--bright);
+      font-weight: 400;
+    }
+
+    ul, ol {
+      margin-left: 1.2rem;
+      margin-bottom: 1.3rem;
+    }
+
+    li {
+      margin-bottom: 0.6rem;
+      color: var(--text);
+    }
+
+    .highlight {
+      background: var(--dim);
+      padding: 0.2em 0.4em;
+      border-radius: 2px;
+      font-family: 'Inter', monospace;
+      font-size: 0.9em;
+    }
+
+    .links-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .link-item {
+      display: inline-block;
+      margin-right: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .link-item a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .link-item a:hover {
+      color: var(--bright);
+    }
+
+    @keyframes up {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .topbar,
+    .section {
+      animation: up 0.45s ease both;
+    }
+
+    .section:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+
+    .section:nth-child(2) {
+      animation-delay: 0.10s;
+    }
+
+    .section:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+
+    .section:nth-child(4) {
+      animation-delay: 0.20s;
+    }
+
+    .section:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+
+    .section:nth-child(6) {
+      animation-delay: 0.30s;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <span class="name">Ahmet Emin Memis</span>
+  </div>
+
+  <a href="/" class="back-link">← back</a>
+
+  <div class="section">
+    <br>
+    <br>
+    <h1 class="title">Teaching Neural Networks to Play Classical Piano</h1>
+    <div class="project-meta">
+      Ahmet Emin Memis, Hacer Yalim Keles<br>
+      Ankara University · February 2021
+    </div>
+      <p class="section-text">
+        <a class="bl" href="https://ieeexplore.ieee.org/document/9477952" target="_blank">paper</a> <a class="bl" href="https://github.com/aememis/lstm-classical-piano" target="_blank">code</a>
+    </p>
+    <div class="project-image">
+      <div style="display: flex; gap: 0.5rem;">
+        <img src="assets/rnnpi1.jpg?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
+        <img src="assets/rnnpi2.gif?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
+        <img src="assets/rnnpi3.jpg?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
+        <img src="assets/rnnpi4.gif?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
+      </div>
+      <!-- <img src="https://cdn.myportfolio.com/219363e1-e857-4bb9-bfd2-cbcf3a4d516f/0cf450b6-1270-4022-9707-d387e79cc1e0.jpg?h=800" alt="RNN Piano Project"> -->
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Overview</div>
+    <p class="section-text">
+      This project aimed to design a model and dataset to create unique classical piano music melodies using sequential neural networks without any human intervention.
+    </p>
+    <p class="section-text">
+      The workflow involved creating a dataset of MIDI files from classical piano pieces, applying multifaceted data representation, training a designed model, and triggering the trained model with seed sequences to create unique melodies. The research was published at the IEEE Conference on Signal Processing and Communication Applications with a contribution of a novel data representation approach for simultaneously played notes.
+    </p>
+    <p class="section-text">
+      <strong>Technologies:</strong> Python, TensorFlow, Music21
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Dataset &amp; Preprocessing</div>
+    <p class="section-text"><strong>Dataset Composition:</strong></p>
+    <ul>
+      <li>203 classical piano pieces</li>
+      <li>250,800 notes/chords total</li>
+      <li>Famous composers: Beethoven, Mozart, Vivaldi</li>
+      <li>Open-source MIDI formatted files</li>
+    </ul>
+    <p class="section-text"><strong>Preprocessing Techniques:</strong></p>
+    <p class="section-text">
+      <strong>Quantization:</strong> Applied on quaver note basis. Notes with duration less than eighth note are rounded to the nearest duration. All pieces sampled to frequency of eighth note.
+    </p>
+    <p class="section-text">
+      <strong>Transposition:</strong> All major pieces transposed to C Major scale; all minor pieces transposed to A Minor scale. This equalizes pieces in terms of scales and reduces the number of different samples without distorting characteristics.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Data Representation (Novel Contribution)</div>
+    <p class="section-text">
+      The main challenge was: How to abstract the music and structure the learning? Pitch and duration were selected as key features.
+    </p>
+    <p class="section-text">
+      <strong>Text-Based Representation Approach:</strong><br>
+      Each MIDI note has an integer value. The challenge is that piano is polyphonic—multiple notes can play simultaneously. The solution: represent notes with integers and join simultaneously played notes in one textual representation using the letter 'o' as a separator.
+    </p>
+    <p class="section-text">
+      <strong>Example:</strong> <span class="highlight">47o73</span> represents a chord of B and D notes.
+    </p>
+    <p class="section-text">
+      <strong>Duration Representation:</strong> Gaps between notes are crucial for proper abstraction of musical flow. An integer-represented offset value is appended at the end of the textual representation.
+    </p>
+    <p class="section-text">
+      <strong>Result:</strong> Each timestamp is represented as a string. For each piece: an array of words representing simultaneously played notes and their durations. Total data: 250,800 strings with 5,353 unique classes.
+    </p>
+    <div class="project-image">
+      <img src="https://cdn.myportfolio.com/219363e1-e857-4bb9-bfd2-cbcf3a4d516f/efa4c33f-ce48-464c-9c13-91f11d22854d.jpg?h=800" alt="Data representation diagram">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Model &amp; Training</div>
+    <p class="section-text">
+      <strong>Data Sequencing:</strong> Input window of 50 words with target window of 1 word. Each sequence includes both input and target samples.
+    </p>
+    <p class="section-text">
+      <strong>Architecture:</strong> Long Short-Term Memory (LSTM) networks. RNNs allow previous outputs to be used as inputs, but LSTM was chosen because RNN memory alone is too short for musical composition which requires learning long-term history. LSTM transmits information multiple time steps over the network, providing longer-term memory.
+    </p>
+    <p class="section-text">
+      <strong>Model Configuration:</strong>
+    </p>
+    <ul>
+      <li>2 stacked LSTM layers with 128 hidden units</li>
+      <li>Dropout layers for regularization and preventing overfitting</li>
+      <li>Dense output layer with Softmax activation</li>
+      <li>Loss function: Categorical cross-entropy</li>
+      <li>Optimizer: Adam</li>
+    </ul>
+    <p class="section-text">
+      <strong>Inference:</strong> The model produces a probability distribution for the next possible notes. The most probable note is selected and appended to the sequence end. The model is triggered repeatedly to generate unique melodies.
+    </p>
+    <div class="project-image">
+      <img src="https://cdn.myportfolio.com/219363e1-e857-4bb9-bfd2-cbcf3a4d516f/4b45610a-87fc-4e6a-8d6e-ca7bf96542ad.jpg?h=800" alt="Model architecture">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Evaluation &amp; Results</div>
+    <p class="section-text">
+      <strong>Survey Design:</strong> 6 melodies were tested: 3 by human musicians (P.I. Tchaikovsky's "The Seasons"), 3 synthesized by the model. All were 17-second compositions presented in random order to 137 participants (average age 23) via online survey, rated on a 1-7 scale.
+    </p>
+    <p class="section-text">
+      <strong>Key Finding:</strong> The average rating difference between Tchaikovsky's compositions and model-generated melodies was small. Melodies produced by the model could not be distinguished from human-made melodies and were perceived as natural.
+    </p>
+    <div class="project-image">
+      <img src="assets/rnnpi_survey_results.jpg?h=800" alt="Survey results">
+    </div>
+  </div>
+
+  <div class="section links-section">
+    <div class="section-title">Links &amp; References</div>
+    <div class="link-item">
+      <a class="bl" href="https://github.com/aememis/lstm-classical-piano" target="_blank">GitHub Repository</a>
+    </div>
+    <div class="link-item">
+      <a class="bl" href="https://www.ankara.edu.tr/en/" target="_blank">Ankara University</a>
+    </div>
+  </div>
+
+</body>
+
+</html>

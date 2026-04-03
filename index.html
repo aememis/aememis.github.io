@@ -19,7 +19,7 @@
 
     :root {
       --bg: #14120e;
-      --text: #6c675d;
+      --text: #8a8680;
       --bright: #d0c8b8;
       --dim: #3e3830;
       --dimmer: #4e433c;
@@ -208,18 +208,18 @@
       flex-shrink: 0;
     }
 
+    .clearfix::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
     .photo-float img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       filter: grayscale(15%);
-    }
-
-    .clearfix::after {
-      content: '';
-      display: block;
-      clear: both;
     }
 
     .toggle {
@@ -290,9 +290,8 @@
     }
 
     .sec {
-      font-size: 0.7rem;
+      font-size: 0.8rem;
       letter-spacing: 0.16em;
-      text-transform: uppercase;
       color: var(--dim);
       margin-bottom: 1.1rem;
     }
@@ -367,6 +366,13 @@
       margin-bottom: 1.4rem;
       padding-left: 0.8rem;
       border-left: 1px solid var(--rule);
+      display: block;
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+
+    .pub:hover {
+      border-left-color: var(--text);
     }
 
     .pub .p-title {
@@ -374,6 +380,11 @@
       font-weight: 400;
       color: var(--text);
       line-height: 1.4;
+      transition: color 0.15s;
+    }
+
+    .pub:hover .p-title {
+      color: var(--bright);
     }
 
     .pub .p-meta {
@@ -381,6 +392,16 @@
       color: var(--dim);
       letter-spacing: 0.04em;
       margin-top: 0.2rem;
+    }
+
+    .sq-items a {
+      color: var(--dimmer);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .sq-items a:hover {
+      color: var(--bright);
     }
 
     .interests {
@@ -552,6 +573,58 @@
       margin-top: 0;
     }
 
+    .sq-trigger {
+      cursor: pointer;
+      user-select: none;
+      color: var(--dimmer);
+    }
+
+    /* .sq-trigger::before {
+      content: '[ ';
+      color: var(--dim);
+    }
+
+    .sq-trigger::after {
+      content: ' ]';
+      color: var(--dim);
+    } */
+
+    .sq-trigger:hover {
+      color: var(--text);
+      color: var(--bright);
+      letter-spacing: 0.13em;
+    }
+
+    .sq-arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+      font-style: normal;
+      margin-right: 0.3em;
+    }
+
+    .sq-trigger.open .sq-arrow {
+      transform: rotate(90deg);
+    }
+
+    .sq-items {
+      display: inline-flex;
+      overflow: hidden;
+      max-width: 0;
+      opacity: 0;
+      transition: max-width 0.55s ease, opacity 0.4s ease;
+      white-space: nowrap;
+      vertical-align: baseline;
+    }
+
+    .sq-items.open {
+      max-width: 600px;
+      opacity: 1;
+    }
+
+    .sq-items span {
+      margin-right: 1rem;
+    }
+
     @keyframes melt {
       0% {
         transform: rotate(0deg) skew(0deg, 0deg) scale(1.00);
@@ -559,28 +632,28 @@
       }
 
       15% {
-        transform: rotate(1.5deg) skew(2deg, 1deg) scale(1.02);
-        filter: grayscale(0%) hue-rotate(40deg);
+        transform: rotate(0.3deg) skew(0.4deg, 0.2deg) scale(1.004);
+        filter: grayscale(5%) hue-rotate(40deg);
       }
 
       30% {
-        transform: rotate(-1deg) skew(-1deg, 2.5deg) scale(0.98);
-        filter: grayscale(0%) hue-rotate(100deg);
+        transform: rotate(-0.2deg) skew(-0.2deg, 0.5deg) scale(0.997);
+        filter: grayscale(5%) hue-rotate(100deg);
       }
 
       50% {
-        transform: rotate(2deg) skew(3deg, -1deg) scale(1.03);
-        filter: grayscale(0%) hue-rotate(200deg);
+        transform: rotate(0.4deg) skew(0.5deg, -0.2deg) scale(1.005);
+        filter: grayscale(5%) hue-rotate(200deg);
       }
 
       70% {
-        transform: rotate(-2deg) skew(-2deg, 1.5deg) scale(0.97);
-        filter: grayscale(0%) hue-rotate(280deg);
+        transform: rotate(-0.3deg) skew(-0.3deg, 0.3deg) scale(0.996);
+        filter: grayscale(5%) hue-rotate(280deg);
       }
 
       85% {
-        transform: rotate(1deg) skew(1.5deg, -2deg) scale(1.01);
-        filter: grayscale(0%) hue-rotate(330deg);
+        transform: rotate(0.2deg) skew(0.2deg, -0.4deg) scale(1.002);
+        filter: grayscale(5%) hue-rotate(330deg);
       }
 
       100% {
@@ -590,7 +663,7 @@
     }
 
     .photo-float img.melting {
-      animation: melt 20s ease-in-out infinite;
+      animation: melt 45s ease-in-out infinite;
     }
 
     @keyframes up {
@@ -629,9 +702,9 @@
     <div class="photo-float">
       <img src="mephoto.png" alt="Photo of Me" />
     </div>
-    <br><br>
+    <br><br><br>
     <div class="title">data scientist<br>music technologist</div>
-    <div class="role">Oslo, Norway</div>
+    <div class="role">Oslo, Norway · <span id="age"></span></div>
   </div>
 
   <div class="block bio">
@@ -639,6 +712,9 @@
     I build things with data and sound<br>
     sometimes separately, sometimes the same thing.<br>
   </div>
+
+  <br>
+  <br>
 
   <div class="toggle">
     <button class="toggle-btn active" data-filter="all">all</button>
@@ -650,12 +726,12 @@
   <!-- WORK -->
   <div class="block" data-id="work">
     <div class="sec">work</div>
-    <a class="item" href="IEMA__Exploring_Complex_Data_Spaces_with_Body-Motion_Interaction.pdf" target="_blank">
+    <a class="item" href="https://hdl.handle.net/10852/120504" target="_blank">
       <span class="i-title">Evolving sound clouds by moving through it</span> <span class="i-year">2024</span>
     </a>
     <a class="item" href="https://mct-master.github.io/interactive-music/2023/12/01/ahmetem-the-hyper-ney.html"
       target="_blank">
-      <span class="i-title">The Hyper-Ney: An Enhanced Traditional Flute</span> <span class="i-year">2023</span>
+      <span class="i-title">Hyper-Ney is an enhanced traditional flute</span> <span class="i-year">2023</span>
     </a>
     <a class="item" href="https://mct-master.github.io/applied-project/2023/11/27/fabianst-intuitive-robotics.html"
       target="_blank">
@@ -689,40 +765,42 @@
     <a class="item" href="https://www.uio.no/ritmo/english/news-and-events/blog/2022/ahmet-emin-memis/" target="_blank">
       <span class="i-title">Clapping together without trying to</span> <span class="i-year">2022</span>
     </a>
-    <a class="item" href="#" target="_blank">
+    <a class="item" href="piano-project.html">
       <span class="i-title">RNN learned to play piano from chord sequences</span> <span class="i-year">2021</span>
     </a>
   </div>
 
+  <br>
   <!-- PUBLICATIONS -->
   <div class="block" data-id="publications">
     <div class="sec">publications</div>
-    <div class="pub">
-      <div class="p-title">The Hyper-Ney: An Enhanced Traditional Flute <span class="i-year">2024</span></div>
-      <div class="p-meta">Conference on New Interfaces for Musical Expression · Utrecht</div>
-    </div>
-    <div class="pub">
-      <div class="p-title">IEMI: An Immersive, Evolving Motion-Controlled Installation <span class="i-year">2024</span>
-      </div>
+    <a class="pub" href="https://hdl.handle.net/10852/120504" target="_blank">
+      <div class="p-title">IEMA: Exploring Complex Data Spaces with Body-Motion Interaction <span class="i-year">2025</span></div>
+      <div class="p-meta">Master's Thesis · University of Oslo</div>
+    </a>
+    <a class="pub" href="https://zenodo.org/records/14339258" target="_blank">
+      <div class="p-title">IEMI: An Immersive, Evolving Motion-Controlled Installation <span class="i-year">2024</span></div>
       <div class="p-meta">Sound and Music Computing Conference · Porto</div>
-    </div>
-    <div class="pub">
-      <div class="p-title">Participatory Applause: Interactions of Audience Members Clapping at the End of a Classical
-        Music Concert <span class="i-year">2022</span></div>
+    </a>
+    <a class="pub" href="https://zenodo.org/records/13904806" target="_blank">
+      <div class="p-title">The Hyper-Ney: An Enhanced Traditional Flute <span class="i-year">2024</span></div>
+      <div class="p-meta">New Interfaces for Musical Expression · Utrecht</div>
+    </a>
+    <a class="pub" href="https://journals.ed.ac.uk/CIM22-Proceedings/article/view/7676" target="_blank">
+      <div class="p-title">Participatory Applause: Interactions of Audience Members Clapping at the End of a Classical Music Concert <span class="i-year">2022</span></div>
       <div class="p-meta">Conference on Interdisciplinary Musicology · Edinburgh</div>
-    </div>
-    <div class="pub">
-      <div class="p-title">Piano Music Generation with a Text Based Musical Note Representation using LSTM Models <span
-          class="i-year">2021</span></div>
+    </a>
+    <a class="pub" href="https://ieeexplore.ieee.org/document/9477952" target="_blank">
+      <div class="p-title">Piano Music Generation with a Text Based Musical Note Representation using LSTM Models <span class="i-year">2021</span></div>
       <div class="p-meta">IEEE Signal Processing and Communications Applications · Istanbul</div>
-    </div>
+    </a>
   </div>
 
   <!-- BACKGROUND -->
   <div class="block" data-id="background">
-    <div class="sec">background</div>
+    <div class="sec">education</div>
 
-    <div class="sec-sub"> </div>
+    <!-- <div class="sec-sub"> </div> -->
 
     <div class="cv-entry">
       <span class="cv-role">MPhil Music, Communication & Technology</span>
@@ -738,7 +816,10 @@
       <span class="cv-year">2021</span>
     </div>
 
-    <div class="sec-sub">experience</div>
+  </div>
+
+  <div class="block" data-id="experience">
+    <div class="sec">experience</div>
 
     <div class="cv-entry">
       <span class="cv-role">Data Analyst</span>
@@ -797,24 +878,30 @@
   </div>
 
   <div class="block interests">
-    <span>travels</span>
-    <span>music</span>
-    <span>photographs</span>
-    <span>nature</span>
-    <span>sailing</span>
-    <span>side quests</span>
+    <span class="sq-trigger"><span class="sq-arrow">›</span>[ side quests ]</span><span
+      class="sq-items">
+        <a href="#" target="_blank">travels</a>
+        <span>&nbsp;</span>
+        <a href="https://soundcloud.com/aememis/sets" target="_blank">music</a>
+        <span>&nbsp;</span>
+        <a href="https://photos.app.goo.gl/vQowbgvxMNaaEjG69" target="_blank">photographs</a>
+        <span>&nbsp;</span>
+        <a href="https://maps.app.goo.gl/jj9xVgxFDAyMFsWF8" target="_blank">nature</a>
+        <span>&nbsp;</span>
+        <a href="https://photos.app.goo.gl/W7C9y3zQdHRzZVJH9" target="_blank">sailing</a>
+      </span>
   </div>
 
   <div class="block contact-line">
-    <a class="bl" href="https://github.com/eminmemis" target="_blank">github</a>
+    <a class="bl" target="_blank" rel="noopener noreferrer" href="https://github.com/aememis">github</a>
     <span class="dot">·</span>
-    <a class="bl" href="https://www.linkedin.com/in/aememis" target="_blank">linkedin</a>
+    <a class="bl" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/aememis">linkedin</a>
     <span class="dot">·</span>
-    <a class="bl" href="/cdn-cgi/l/email-protection#bbdad3d6decfded6d2d5d6ded6d2c8fbdcd6dad2d795d8d4d6">email</a>
+    <a class="bl" href="mailto:ahmeteminmemis@gmail.com">email</a>
   </div>
 
   <div class="foot">
-    <span id="location-age">Oslo · <span id="age">—</span></span>
+    <span id="location-age">Oslo<span id="age"></span></span>
     <span id="week-seed">—</span>
   </div>
 
@@ -828,7 +915,7 @@
       return age;
     }
     document.addEventListener('DOMContentLoaded', function () {
-      const birthDate = new Date(1998, 1, 26);
+      const birthDate = new Date(1998, 2, 26);
       document.getElementById('age').textContent = calculateAge(birthDate);
     });
 
@@ -857,7 +944,8 @@
       }
       const start = new Date(now.getFullYear(), 0, 0);
       const week = Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
-      document.getElementById('week-seed').textContent = `${now.getFullYear()}-W${pad(week)}`;
+      // document.getElementById('week-seed').textContent = `${now.getFullYear()}-W${pad(week)}`;
+      document.getElementById('week-seed').textContent = `${now.getFullYear()}`;
     }
     tick(); setInterval(tick, 1000);
 
@@ -895,7 +983,7 @@
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const master = audioCtx.createGain();
       master.gain.setValueAtTime(0.0, audioCtx.currentTime);
-      master.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 3);
+      master.gain.linearRampToValueAtTime(0.22, audioCtx.currentTime + 5);
       master.connect(audioCtx.destination);
       soundNodes.push(master);
 
@@ -922,15 +1010,15 @@
       filter.Q.value = 1.2;
 
       const lfo = audioCtx.createOscillator();
-      lfo.frequency.value = 0.08;
+      lfo.frequency.value = 0.025;
       const lfoGain = audioCtx.createGain();
-      lfoGain.gain.value = 220;
+      lfoGain.gain.value = 70;
       lfo.connect(lfoGain);
       lfoGain.connect(filter.frequency);
       lfo.start();
 
       const windGain = audioCtx.createGain();
-      windGain.gain.value = 0.5;
+      windGain.gain.value = 0.18;
 
       noiseSource.connect(filter);
       filter.connect(windGain);
@@ -944,7 +1032,7 @@
       function spawnTone() {
         if (!audioCtx || audioCtx.state === 'closed') return;
 
-        const next = (3 + Math.random() * 9) * 1000;
+        const next = (10 + Math.random() * 20) * 1000;
         const t = setTimeout(spawnTone, next);
         toneTimeouts.push(t);
 
@@ -954,12 +1042,12 @@
           + (Math.random() - 0.5) * 180;
         const now = audioCtx.currentTime;
 
-        const A = 0.08 + Math.random() * 0.08;
-        const D = 0.04 + Math.random() * 0.04;
+        const A = 0.4 + Math.random() * 0.6;
+        const D = 0.2 + Math.random() * 0.3;
         const SL = 0.3 + Math.random() * 0.3;
-        const S = 0.4 + Math.random() * 0.4;
-        const R = 0.8 + Math.random() * 0.6;
-        const peak = 0.025 + Math.random() * 0.025;
+        const S = 1.0 + Math.random() * 1.5;
+        const R = 2.0 + Math.random() * 2.0;
+        const peak = 0.008 + Math.random() * 0.007;
         const dur = A + D + S + R;
 
         const osc = audioCtx.createOscillator();
@@ -980,7 +1068,7 @@
         osc.stop(now + dur + 0.05);
       }
 
-      [0, 3500, 8000, 14000].forEach(delay => {
+      [0, 8000, 18000, 32000].forEach(delay => {
         const t = setTimeout(spawnTone, delay);
         toneTimeouts.push(t);
       });
@@ -1035,35 +1123,27 @@
           width: ${size}px; height: ${size}px;
           border-radius: 50%;
           background: hsl(${Math.random() * 360}, 60%, 65%);
-          opacity: 0.18;
+          opacity: 0;
           pointer-events: all;
           cursor: default;
           transition: opacity 0.2s, transform 0.2s;
         `;
+        // staggered fade-in over ~2s
+        setTimeout(() => {
+          dot.style.transition = 'opacity 1.8s ease, transform 0.2s';
+          dot.style.opacity = '0.18';
+          setTimeout(() => { dot.style.transition = 'opacity 0.2s, transform 0.2s'; }, 1900);
+        }, i * 35);
 
         // drift state
         dot._dx = 0; dot._dy = 0;
         dot._vx = 0; dot._vy = 0;
         dot._ox = x; dot._oy = y; // origin in vw/vh
 
-        const assignedWord = cloudWords[i % cloudWords.length];
-        let lastPlayed = 0;
-
-        dot.addEventListener('mouseenter', () => {
-          const now = Date.now();
-          if (now - lastPlayed < 1500) return;
-          lastPlayed = now;
-          dot.style.opacity = '0.75';
-          dot.style.transform = 'scale(2)';
-          const a = new Audio(`audio/${assignedWord}.mp3`);
-          a.volume = 0.2 + Math.random() * 0.3;
-          a.play().catch(() => { });
-        });
-
-        dot.addEventListener('mouseleave', () => {
-          dot.style.opacity = '0.18';
-          dot.style.transform = 'scale(1)';
-        });
+        dot._word = cloudWords[i % cloudWords.length];
+        dot._size = size;
+        dot._lastPlayed = 0;
+        dot._hovered = false;
 
         container.appendChild(dot);
         cloudDots.push(dot);
@@ -1071,7 +1151,10 @@
 
       document.body.appendChild(container);
 
-      // animate dots
+      let cloudMX = -9999, cloudMY = -9999;
+      document.addEventListener('mousemove', (e) => { cloudMX = e.clientX; cloudMY = e.clientY; });
+
+      // animate dots + proximity hover
       function driftFrame() {
         cloudDots.forEach(d => {
           d._vx += (Math.random() - 0.5) * 0.004;
@@ -1084,6 +1167,30 @@
           d._dy += d._vy;
           d.style.left = `calc(${d._ox}vw + ${d._dx.toFixed(2)}px)`;
           d.style.top = `calc(${d._oy}vh + ${d._dy.toFixed(2)}px)`;
+
+          // proximity-based hover (more reliable than mouseenter on moving elements)
+          const rect = d.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dist = Math.sqrt((cloudMX - cx) ** 2 + (cloudMY - cy) ** 2);
+          const threshold = d._size + 16;
+
+          if (dist < threshold && !d._hovered) {
+            d._hovered = true;
+            d.style.opacity = '0.8';
+            d.style.transform = 'scale(1.7)';
+            const now = Date.now();
+            if (now - d._lastPlayed > 1500) {
+              d._lastPlayed = now;
+              const a = new Audio(`audio/${d._word}.mp3`);
+              a.volume = 0.08 + Math.random() * 0.12;
+              a.play().catch(() => { });
+            }
+          } else if (dist >= threshold && d._hovered) {
+            d._hovered = false;
+            d.style.opacity = '0.18';
+            d.style.transform = 'scale(1)';
+          }
         });
         cloudFrame = requestAnimationFrame(driftFrame);
       }
@@ -1094,19 +1201,25 @@
       if (cloudFrame) { cancelAnimationFrame(cloudFrame); cloudFrame = null; }
       cloudDots = [];
       const c = document.getElementById('point-cloud');
-      if (c) c.remove();
+      if (!c) return;
+      // fade all dots out, then remove
+      c.querySelectorAll('div').forEach(d => {
+        d.style.transition = 'opacity 1.8s ease';
+        d.style.opacity = '0';
+      });
+      setTimeout(() => c.remove(), 2000);
     }
     let wildFrame = null;
     const wildOffsets = new Map();
 
     function applyWildColors() {
       document.querySelector('.photo-float img')?.classList.add('melting');
-      const els = document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests span, .cv-role');
+      const els = document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests .sq-trigger, .cv-role, .name, .title, .bio');
       els.forEach((el) => {
         if (!wildOffsets.has(el)) {
           wildOffsets.set(el, {
             hue: Math.random() * 360,
-            speed: 0.2 + Math.random() * 0.8,
+            speed: 0.04 + Math.random() * 0.12,
             dir: Math.random() > 0.5 ? 1 : -1,
             dx: 0, dy: 0,
             vx: 0, vy: 0,
@@ -1118,7 +1231,7 @@
 
       const bgState = {
         hue: Math.random() * 360,
-        speed: 0.05 + Math.random() * 0.1,
+        speed: 0.08 + Math.random() * 0.12,
         dir: Math.random() > 0.5 ? 1 : -1
       };
 
@@ -1130,14 +1243,14 @@
           el.style.color = `hsl(${s.hue}, 85%, 72%)`;
           el.style.transition = 'none';
           // independent random walk — tiny random nudge each frame
-          s.vx += (Math.random() - 0.5) * 0.006;
-          s.vy += (Math.random() - 0.5) * 0.004;
+          s.vx += (Math.random() - 0.5) * 0.0018;
+          s.vy += (Math.random() - 0.5) * 0.0012;
           // soft speed cap
           const spd = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
-          if (spd > 0.18) { s.vx *= 0.18 / spd; s.vy *= 0.18 / spd; }
+          if (spd > 0.06) { s.vx *= 0.06 / spd; s.vy *= 0.06 / spd; }
           // gentle pull back toward origin so they don't drift away
-          s.vx -= s.dx * 0.0006;
-          s.vy -= s.dy * 0.0006;
+          s.vx -= s.dx * 0.0003;
+          s.vy -= s.dy * 0.0003;
           s.dx += s.vx;
           s.dy += s.vy;
           el.style.transform = `translate(${s.dx.toFixed(2)}px, ${s.dy.toFixed(2)}px)`;
@@ -1147,8 +1260,8 @@
         if (first) knob.style.background = `hsl(${first.hue}, 85%, 72%)`;
 
         bgState.hue = (bgState.hue + bgState.speed * bgState.dir + 360) % 360;
-        document.documentElement.style.setProperty('--bg', `hsl(${bgState.hue}, 18%, 10%)`);
-        document.documentElement.style.setProperty('--toggle-active-bg', `hsl(${bgState.hue}, 18%, 13%)`);
+        document.documentElement.style.setProperty('--bg', `hsl(${bgState.hue}, 35%, 10%)`);
+        document.documentElement.style.setProperty('--toggle-active-bg', `hsl(${bgState.hue}, 35%, 13%)`);
 
         wildFrame = requestAnimationFrame(frame);
       }
@@ -1160,7 +1273,7 @@
       document.querySelector('.photo-float img')?.classList.remove('melting');
       if (wildFrame) { cancelAnimationFrame(wildFrame); wildFrame = null; }
       wildOffsets.clear();
-      document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests span, .cv-role').forEach(el => {
+      document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests .sq-trigger, .cv-role, .name, .title, .bio').forEach(el => {
         el.style.color = '';
         el.style.transition = '';
         el.style.transform = '';
@@ -1189,6 +1302,7 @@
     }
 
     setTheme(1);
+    setTimeout(() => setTheme(2), 180000); // auto-switch to WTF mode after 3 minutes
     track.addEventListener('click', stepTheme);
 
     // ── FILTER TOGGLE ──
@@ -1201,6 +1315,12 @@
           block.classList.toggle('hidden', f !== 'all' && block.dataset.id !== f);
         });
       });
+    });
+
+    // ── SIDE QUESTS TOGGLE ──
+    document.querySelector('.sq-trigger').addEventListener('click', () => {
+      document.querySelector('.sq-trigger').classList.toggle('open');
+      document.querySelector('.sq-items').classList.toggle('open');
     });
 
     // ── WEEK DRIFT ──
