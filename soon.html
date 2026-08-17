@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oops</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;1,14..32,300&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #14120e; --text: #8a8680; --bright: #d0c8b8; --dim: #6a6258; --dimmer: #5c5248; }
+    html { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.65; }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.4rem; padding: 2rem; text-align: center; }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* square crop of a 16:9 embed */
+    .gif { width: 180px; height: 180px; overflow: hidden; }
+    .gif-in { width: 322px; margin-left: -71px; }
+    .gif-in .tenor-gif-embed { filter: grayscale(40%) brightness(0.9); }
+    .gif-in a { font-size: 0.65rem; color: var(--dimmer); }
+
+    .l1 { font-size: 0.85rem; color: var(--text); }
+    .l2 { font-size: 0.72rem; color: var(--dimmer); letter-spacing: 0.04em; }
+    .back { font-size: 0.7rem; color: var(--dim); margin-top: 1rem; }
+    .back::before { content: '[ '; } .back::after { content: ' ]'; }
+    .back:hover { color: var(--bright); }
+  </style>
+</head>
+<body>
+
+  <div class="gif">
+    <div class="gif-in">
+      <div class="tenor-gif-embed" data-postid="4851885" data-share-method="host" data-aspect-ratio="1.78571" data-width="100%"><a href="https://tenor.com/view/kermit-typing-essay-school-smart-gif-4851885">Kermit Typing GIF</a></div>
+      <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    </div>
+  </div>
+
+  <div>
+    <div class="l1">not ready yet.</div>
+    <div class="l2">no deadline. it'll show up.</div>
+  </div>
+
+  <a class="back" href="index.html">back</a>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RNN Classical Piano — Ahmet Emin Memis</title>
+  <title>LSTM Classical Piano — Ahmet Emin Memis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;1,14..32,300&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -242,6 +242,93 @@
       color: var(--bright);
     }
 
+    /* ── FIGURES ──
+       drawn in markup rather than shipped as images, so they can't rot */
+    .fig {
+      margin: 2.2rem 0;
+      padding: 1.8rem 1.4rem 1.1rem;
+      border: 1px solid var(--rule);
+      background: var(--toggle-active-bg);
+    }
+
+    .fig figcaption {
+      font-size: 0.72rem;
+      color: var(--dimmer);
+      line-height: 1.7;
+      margin-top: 1.4rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .fig code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.9em;
+      color: var(--text);
+    }
+
+    .enc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .enc-note {
+      border: 1px solid var(--rule);
+      padding: 0.4rem 0.8rem;
+      color: var(--bright);
+      font-size: 0.95rem;
+    }
+
+    .enc-op,
+    .enc-arrow {
+      color: var(--dimmer);
+      font-size: 0.8rem;
+    }
+
+    .enc-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--bright);
+      letter-spacing: 0.08em;
+      padding: 0.4rem 0.85rem;
+      border: 1px solid var(--dimmer);
+      font-size: 0.95rem;
+    }
+
+    .enc-code em {
+      color: var(--dimmer);
+      font-style: normal;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stack-layer {
+      border: 1px solid var(--rule);
+      padding: 0.45rem 1.2rem;
+      min-width: 16rem;
+      text-align: center;
+      color: var(--text);
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+    }
+
+    .stack-layer.io {
+      border-style: dashed;
+      color: var(--dimmer);
+    }
+
+    .stack-arrow {
+      color: var(--dimmer);
+      font-size: 0.65rem;
+      padding: 0.3rem 0;
+      line-height: 1;
+    }
+
     @keyframes up {
       from {
         opacity: 0;
@@ -288,10 +375,10 @@
 <body>
 
   <div class="topbar">
-    <span class="name">Ahmet Emin Memis</span>
+    <a class="name" href="index.html">Ahmet Emin Memis</a>
   </div>
 
-  <a href="/" class="back-link">← back</a>
+  <a href="index.html" class="back-link">← back</a>
 
   <div class="section">
     <br>
@@ -306,12 +393,11 @@
     </p>
     <div class="project-image">
       <div style="display: flex; gap: 0.5rem;">
-        <img src="assets/rnnpi1.jpg?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
-        <img src="assets/rnnpi2.gif?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
-        <img src="assets/rnnpi3.jpg?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
-        <img src="assets/rnnpi4.gif?h=80" alt="RNN Piano Project" style="width: 25%; height: auto;">
+        <img src="piano/rnnpi1.jpg" alt="Portrait of Schubert" style="width: 25%; height: auto;">
+        <img src="piano/rnnpi2.gif" alt="Composer portrait glitching as the model samples" style="width: 25%; height: auto;">
+        <img src="piano/rnnpi3.jpg" alt="Composer portrait" style="width: 25%; height: auto;">
+        <img src="piano/rnnpi4.gif" alt="Composer portrait glitching as the model samples" style="width: 25%; height: auto;">
       </div>
-      <!-- <img src="https://cdn.myportfolio.com/219363e1-e857-4bb9-bfd2-cbcf3a4d516f/0cf450b6-1270-4022-9707-d387e79cc1e0.jpg?h=800" alt="RNN Piano Project"> -->
     </div>
   </div>
 
@@ -364,9 +450,20 @@
     <p class="section-text">
       <strong>Result:</strong> Each timestamp is represented as a string. For each piece: an array of words representing simultaneously played notes and their durations. Total data: 250,800 strings with 5,353 unique classes.
     </p>
-    <div class="project-image">
-      <img src="https://cdn.myportfolio.com/219363e1-e857-4bb9-bfd2-cbcf3a4d516f/efa4c33f-ce48-464c-9c13-91f11d22854d.jpg?h=800" alt="Data representation diagram">
-    </div>
+    <figure class="fig">
+      <div class="enc">
+        <span class="enc-note">B</span>
+        <span class="enc-op">+</span>
+        <span class="enc-note">D</span>
+        <span class="enc-arrow">──→</span>
+        <span class="enc-code">47<em>o</em>73</span>
+      </div>
+      <figcaption>
+        Two notes sounding at the same instant collapse into a single word. The MIDI integers are
+        joined by <code>o</code>, and the offset to the next event is appended to the tail — so one
+        timestamp, however dense, is always exactly one token.
+      </figcaption>
+    </figure>
   </div>
 
   <div class="section">
@@ -390,9 +487,27 @@
     <p class="section-text">
       <strong>Inference:</strong> The model produces a probability distribution for the next possible notes. The most probable note is selected and appended to the sequence end. The model is triggered repeatedly to generate unique melodies.
     </p>
-    <div class="project-image">
-      <img src="https://cdn.myportfolio.com/219363e1-e857-4bb9-bfd2-cbcf3a4d516f/4b45610a-87fc-4e6a-8d6e-ca7bf96542ad.jpg?h=800" alt="Model architecture">
-    </div>
+    <figure class="fig">
+      <div class="stack">
+        <div class="stack-layer io">sequence of 50 words</div>
+        <div class="stack-arrow">▼</div>
+        <div class="stack-layer">LSTM · 128 hidden units</div>
+        <div class="stack-arrow">▼</div>
+        <div class="stack-layer">dropout</div>
+        <div class="stack-arrow">▼</div>
+        <div class="stack-layer">LSTM · 128 hidden units</div>
+        <div class="stack-arrow">▼</div>
+        <div class="stack-layer">dropout</div>
+        <div class="stack-arrow">▼</div>
+        <div class="stack-layer">dense · softmax</div>
+        <div class="stack-arrow">▼</div>
+        <div class="stack-layer io">5,353 classes</div>
+      </div>
+      <figcaption>
+        The output is a distribution over every chord-and-duration word seen in the corpus. Take the
+        most probable one, push it onto the end of the sequence, and ask again.
+      </figcaption>
+    </figure>
   </div>
 
   <div class="section">
@@ -403,9 +518,6 @@
     <p class="section-text">
       <strong>Key Finding:</strong> The average rating difference between Tchaikovsky's compositions and model-generated melodies was small. Melodies produced by the model could not be distinguished from human-made melodies and were perceived as natural.
     </p>
-    <div class="project-image">
-      <img src="assets/rnnpi_survey_results.jpg?h=800" alt="Survey results">
-    </div>
   </div>
 
   <div class="section links-section">

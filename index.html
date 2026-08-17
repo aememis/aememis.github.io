@@ -1,709 +1,242 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ahmet Emin Memis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;1,14..32,300&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;1,14..32,300&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #14120e;
-      --text: #8a8680;
-      --bright: #d0c8b8;
-      --dim: #3e3830;
-      --dimmer: #4e433c;
-      --rule: #2a2420;
-      --bio: #60584e;
-      --toggle-active-bg: #1e1c18;
-      --toggle-active-text: #d0c8b8;
+      --bg: #14120e; --text: #8a8680; --bright: #d0c8b8;
+      --dim: #6a6258; --dimmer: #5c5248; --rule: #2a2420;
+      --bio: #60584e; --toggle-active-bg: #1e1c18; --toggle-active-text: #d0c8b8;
+      --mat: #1a1814; --mat-hi: #201d18;
     }
-
     [data-theme="light"] {
-      --bg: #f0ece2;
-      --text: #403b33;
-      --bright: #1a1814;
-      --dim: #b0a898;
-      --dimmer: #9c9689;
-      --rule: #ddd8cc;
-      --bio: #9a9288;
-      --toggle-active-bg: #e4e0d4;
-      --toggle-active-text: #1a1814;
+      --bg: #f0ece2; --text: #403b33; --bright: #1a1814;
+      --dim: #b0a898; --dimmer: #9c9689; --rule: #ddd8cc;
+      --bio: #9a9288; --toggle-active-bg: #e4e0d4; --toggle-active-text: #1a1814;
+      --mat: #e7e3d8; --mat-hi: #ece8de;
     }
-
     [data-theme="wild"] {
-      --bg: #0e0e12;
-      --text: #9f9f9f;
-      --bright: #ffffff;
-      --dim: #444;
-      --dimmer: #333;
-      --rule: #333;
-      --bio: #888;
-      --toggle-active-bg: #1a1a20;
-      --toggle-active-text: #fff;
+      --bg: #0e0e12; --text: #9f9f9f; --bright: #ffffff;
+      --dim: #666; --dimmer: #555; --rule: #333;
+      --bio: #888; --toggle-active-bg: #1a1a20; --toggle-active-text: #fff;
+      --mat: #16161c; --mat-hi: #1c1c24;
     }
-
-    * {
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
-
-    html {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-weight: 300;
-      font-size: 16px;
-      line-height: 1.65;
-    }
-
-    body {
-      max-width: 750px;
-      margin: 0 auto;
-      padding: 3.5rem 2rem 8rem;
-    }
-
+    * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+    html { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.65; }
+    body { max-width: 750px; margin: 0 auto; padding: 3.5rem 2rem 8rem; }
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 100;
-      opacity: 0.025;
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.025;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       background-size: 180px;
     }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--bright); }
+    .bl::before { content: '[ '; color: var(--dim); transition: color 0.15s, letter-spacing 0.15s; }
+    .bl::after  { content: ' ]'; color: var(--dim); transition: color 0.15s, letter-spacing 0.15s; }
+    a.bl:hover { color: var(--bright); }
+    a.bl:hover::before, a.bl:hover::after { color: var(--text); letter-spacing: 0.06em; }
+    .item:hover .i-title::before, .item:hover .i-title::after { color: var(--text); letter-spacing: 0.06em; }
 
-    a {
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; font-size: 0.95rem; color: var(--dim); }
+    .topbar .name { font-weight: 400; color: var(--bright); font-size: 1.1rem; line-height: 1; }
+    .topbar-right { display: flex; align-items: center; gap: 1.2rem; }
+    .clock-wrap { display: inline-flex; align-items: center; line-height: 1; }
+    .night-note { font-size: 0.7rem; color: var(--dim); font-style: italic; letter-spacing: 0.04em; display: none; }
+    .night-note.visible { display: inline; }
+
+    .contact-inline { font-size: 0.72rem; color: var(--dim); display: flex; gap: 0.5rem; align-items: center; margin-bottom: 3rem; }
+    .contact-inline a { color: var(--dim); text-decoration: none; transition: color 0.15s; }
+    .contact-inline a:hover { color: var(--bright); }
+    .ci-dot { color: var(--dimmer); }
+
+    .theme-switch { display: flex; flex-direction: row; align-items: center; gap: 0.4rem; }
+    .theme-switch .th-label { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); min-width: 2.2rem; text-align: right; line-height: 1; transition: color 0.2s; }
+    .theme-track { position: relative; width: 48px; height: 16px; border: 1px solid var(--dimmer); cursor: pointer; background: var(--bg); display: flex; align-items: center; padding: 0 2px; }
+    .theme-knob { width: 10px; height: 10px; background: var(--text); position: absolute; left: 3px; transition: left 0.2s ease, background 0.2s; }
+
+    .photo-float { float: right; margin: 0 0 1.5rem 2rem; width: 200px; height: 200px; overflow: hidden; flex-shrink: 0; }
+    .photo-float img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(15%); }
+    .clearfix::after { content: ''; display: block; clear: both; }
+
+    .toggle { display: flex; gap: 0; margin-top: 7.5rem; margin-bottom: 3rem; border: 1px solid var(--rule); width: fit-content; }
+    .toggle-btn { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); background: none; border: none; border-right: 1px solid var(--rule); padding: 0.4rem 0.9rem; cursor: pointer; transition: color 0.15s, background 0.15s; }
+    .toggle-btn:last-child { border-right: none; }
+    .toggle-btn:hover { color: var(--text); }
+    .toggle-btn.active { color: var(--toggle-active-text); background: var(--toggle-active-bg); }
+
+    .block { margin-bottom: 3rem; }
+    .block[data-id].hidden { display: none; }
+    .name-block .title { font-size: 1.4rem; font-weight: 400; color: var(--bright); line-height: 1.3; }
+    .name-block .role { font-size: 0.82rem; color: var(--dim); letter-spacing: 0.06em; margin-top: 0.5rem; }
+    .bio { font-size: 1rem; color: var(--bio); font-style: italic; line-height: 2; max-width: 38ch; }
+
+    .sec { font-size: 0.8rem; letter-spacing: 0.16em; color: var(--dim); margin-bottom: 1.1rem; }
+
+    .item { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 1.3rem; line-height: 1.3; text-decoration: none; }
+    .item .i-title { font-size: 0.95rem; font-weight: 400; color: var(--text); }
+    .item .i-title::before { content: '[ '; color: var(--dim); transition: color 0.15s, letter-spacing 0.15s; }
+    .item .i-title::after  { content: ' ]'; color: var(--dim); transition: color 0.15s, letter-spacing 0.15s; }
+    .item:hover .i-title { color: var(--bright); }
+    .i-year { font-size: 0.7rem; color: var(--dim); letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0; }
+    .item:hover .i-year { color: var(--text); }
+
+    .pub { margin-bottom: 1.4rem; padding-left: 0.8rem; border-left: 1px solid var(--rule); display: block; text-decoration: none; transition: border-color 0.15s; }
+    .pub:hover { border-left-color: var(--text); }
+    .pub .p-title { font-size: 0.9rem; font-weight: 400; color: var(--text); line-height: 1.4; transition: color 0.15s; }
+    .pub:hover .p-title { color: var(--bright); }
+    .pub .p-meta { font-size: 0.68rem; color: var(--dim); letter-spacing: 0.04em; margin-top: 0.2rem; }
+
+    .sides-block .sec { margin-bottom: 0.8rem; }
+    .sides-list { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .sides-list a { color: var(--dim); text-decoration: none; transition: color 0.15s; }
+    .sides-list a:hover { color: var(--bright); }
+
+    .foot { margin-top: 5rem; display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 0.06em; color: var(--dimmer); }
+
+    [data-theme="wild"] .name { color: #fff !important; }
+    [data-theme="wild"] .bio { color: #aaa; }
+
+    .topbar, .toggle, .block { animation: up 0.45s ease both; }
+    .topbar { animation-delay: 0.00s; } .toggle { animation-delay: 0.07s; }
+    .block:nth-child(4) { animation-delay: 0.10s; } .block:nth-child(5) { animation-delay: 0.13s; }
+    .block:nth-child(6) { animation-delay: 0.16s; } .block:nth-child(7) { animation-delay: 0.19s; }
+    .block:nth-child(8) { animation-delay: 0.22s; } .block:nth-child(9) { animation-delay: 0.25s; }
+    .block:nth-child(10) { animation-delay: 0.28s; }
+
+    .cv-entry { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+    .cv-role { font-size: 0.95rem; font-weight: 400; color: var(--text); }
+    .cv-org { font-size: 0.75rem; color: var(--text); letter-spacing: 0.04em; }
+    .cv-year { font-size: 0.7rem; color: var(--text); letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0; }
+    .cv-dot { color: var(--dim); margin: 0 0.2rem; }
+    .cv-sub { font-size: 0.72rem; color: var(--dim); margin-top: 0.2rem; margin-bottom: 1rem; line-height: 1.6; max-width: 65ch; }
+    .cv-prev { font-size: 0.72rem; color: var(--dimmer); margin-top: -0.1rem; margin-bottom: 0.6rem; font-style: italic; }
+
+    @keyframes melt {
+      0%   { transform: rotate(0deg) skew(0deg,0deg) scale(1.00); filter: grayscale(15%) hue-rotate(0deg); }
+      15%  { transform: rotate(0.3deg) skew(0.4deg,0.2deg) scale(1.004); filter: grayscale(5%) hue-rotate(40deg); }
+      30%  { transform: rotate(-0.2deg) skew(-0.2deg,0.5deg) scale(0.997); filter: grayscale(5%) hue-rotate(100deg); }
+      50%  { transform: rotate(0.4deg) skew(0.5deg,-0.2deg) scale(1.005); filter: grayscale(5%) hue-rotate(200deg); }
+      70%  { transform: rotate(-0.3deg) skew(-0.3deg,0.3deg) scale(0.996); filter: grayscale(5%) hue-rotate(280deg); }
+      85%  { transform: rotate(0.2deg) skew(0.2deg,-0.4deg) scale(1.002); filter: grayscale(5%) hue-rotate(330deg); }
+      100% { transform: rotate(0deg) skew(0deg,0deg) scale(1.00); filter: grayscale(15%) hue-rotate(360deg); }
+    }
+    .photo-float img.melting { animation: melt 45s ease-in-out infinite; }
+    @keyframes up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── WORK GRID ── */
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 1.75rem;
+      row-gap: 2.6rem;
+    }
+    .wcard {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
       color: inherit;
-      text-decoration: none;
     }
-
-    a:hover {
-      color: var(--bright);
-    }
-
-    .bl::before {
-      content: '[ ';
-      color: var(--dim);
-      transition: color 0.15s, font-size 0.15s, letter-spacing 0.15s;
-    }
-
-    .bl::after {
-      content: ' ]';
-      color: var(--dim);
-      transition: color 0.15s, font-size 0.15s, letter-spacing 0.15s;
-    }
-
-    a.bl:hover {
-      color: var(--bright);
-    }
-
-    a.bl:hover::before,
-    a.bl:hover::after {
-      color: var(--text);
-      letter-spacing: 0.06em;
-    }
-
-    .item:hover .i-title::before,
-    .item:hover .i-title::after {
-      color: var(--text);
-      letter-spacing: 0.06em;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4rem;
-      font-size: 0.95rem;
-      color: var(--dim);
-    }
-
-    .topbar .name {
-      font-weight: 400;
-      color: var(--bright);
-      font-size: 1.1rem;
-      line-height: 1;
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-    }
-
-    .clock-wrap {
-      display: inline-flex;
-      align-items: center;
-      line-height: 1;
-    }
-
-    .night-note {
-      font-size: 0.7rem;
-      color: var(--dim);
-      font-style: italic;
-      letter-spacing: 0.04em;
-      display: none;
-    }
-
-    .night-note.visible {
-      display: inline;
-    }
-
-    .theme-switch {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .theme-switch .th-label {
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dim);
-      min-width: 2.2rem;
-      text-align: right;
-      line-height: 1;
-      transition: color 0.2s;
-    }
-
-    .theme-track {
-      position: relative;
-      width: 48px;
-      height: 16px;
-      border: 1px solid var(--dimmer);
-      cursor: pointer;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      padding: 0 2px;
-    }
-
-    .theme-knob {
-      width: 10px;
-      height: 10px;
-      background: var(--text);
-      position: absolute;
-      left: 3px;
-      transition: left 0.2s ease, background 0.2s;
-    }
-
-    .photo-float {
-      float: right;
-      margin: 0 0 1.5rem 2rem;
-      width: 200px;
-      height: 200px;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .clearfix::after {
-      content: '';
-      display: block;
-      clear: both;
-    }
-
-    .photo-float img {
+    /* the mat: every cover sits in an identical square mount, so the
+       page reads as one set even though the images have nothing in common */
+    .wcard-img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: grayscale(15%);
-    }
-
-    .toggle {
-      display: flex;
-      gap: 0;
-      margin-top: 7.5rem;
-      margin-bottom: 3.5rem;
+      aspect-ratio: 1/1;
+      background: var(--mat);
       border: 1px solid var(--rule);
-      width: fit-content;
-    }
-
-    .toggle-btn {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dim);
-      background: none;
-      border: none;
-      border-right: 1px solid var(--rule);
-      padding: 0.4rem 0.9rem;
-      cursor: pointer;
-      transition: color 0.15s, background 0.15s;
-    }
-
-    .toggle-btn:last-child {
-      border-right: none;
-    }
-
-    .toggle-btn:hover {
-      color: var(--text);
-    }
-
-    .toggle-btn.active {
-      color: var(--toggle-active-text);
-      background: var(--toggle-active-bg);
-    }
-
-    .block {
-      margin-bottom: 3rem;
-    }
-
-    .block[data-id].hidden {
-      display: none;
-    }
-
-    .name-block .title {
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: var(--bright);
-      line-height: 1.3;
-    }
-
-    .name-block .role {
-      font-size: 0.82rem;
-      color: var(--dim);
-      letter-spacing: 0.06em;
-      margin-top: 0.5rem;
-    }
-
-    .bio {
-      font-size: 1rem;
-      color: var(--bio);
-      font-style: italic;
-      line-height: 2;
-      max-width: 38ch;
-    }
-
-    .sec {
-      font-size: 0.8rem;
-      letter-spacing: 0.16em;
-      color: var(--dim);
-      margin-bottom: 1.1rem;
-    }
-
-    .item {
       display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin-bottom: 1.3rem;
-      line-height: 1.3;
-      text-decoration: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0.85rem;
+      overflow: hidden;
+      transition: border-color 0.25s, background 0.25s;
     }
-
-    .item .i-title {
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: var(--text);
-    }
-
-    .item .i-title::before {
-      content: '[ ';
-      color: var(--dim);
-      transition: color 0.15s, letter-spacing 0.15s;
-    }
-
-    .item .i-title::after {
-      content: ' ]';
-      color: var(--dim);
-      transition: color 0.15s, letter-spacing 0.15s;
-    }
-
-    .item:hover .i-title {
-      color: var(--bright);
-    }
-
-    .i-year {
-      font-size: 0.7rem;
-      color: var(--dim);
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .item:hover .i-year {
-      color: var(--text);
-    }
-
-    .item-plain {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin-bottom: 1.3rem;
-    }
-
-    .item-plain .i-title {
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: var(--text);
-    }
-
-    .item-plain .i-title::before {
-      content: '[ ';
-      color: var(--dim);
-    }
-
-    .item-plain .i-title::after {
-      content: ' ]';
-      color: var(--dim);
-    }
-
-    .pub {
-      margin-bottom: 1.4rem;
-      padding-left: 0.8rem;
-      border-left: 1px solid var(--rule);
+    .wcard:hover .wcard-img { border-color: var(--dimmer); background: var(--mat-hi); }
+    /* contain, never crop — half of these are diagrams and charts that
+       lose their meaning the moment you cut the edges off */
+    .wcard-img img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto; height: auto;
+      object-fit: contain;
       display: block;
-      text-decoration: none;
-      transition: border-color 0.15s;
+      filter: grayscale(22%) brightness(0.9) contrast(0.96);
+      transition: filter 0.35s ease;
     }
-
-    .pub:hover {
-      border-left-color: var(--text);
+    .wcard:hover .wcard-img img { filter: grayscale(0%) brightness(1) contrast(1); }
+    .wcard-img.no-img { position: relative; }
+    .wcard-img.no-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 8px,
+        var(--rule) 8px,
+        var(--rule) 9px
+      );
+      opacity: 0.4;
     }
-
-    .pub .p-title {
-      font-size: 0.9rem;
+    .wcard-body {
+      padding: 0.7rem 0.1rem 0;
+      display: flex; flex-direction: column; gap: 0.25rem;
+    }
+    .wcard-title {
+      font-size: 0.76rem;
       font-weight: 400;
       color: var(--text);
       line-height: 1.4;
       transition: color 0.15s;
     }
-
-    .pub:hover .p-title {
-      color: var(--bright);
-    }
-
-    .pub .p-meta {
-      font-size: 0.68rem;
-      color: var(--dim);
-      letter-spacing: 0.04em;
-      margin-top: 0.2rem;
-    }
-
-    .sq-items a {
+    .wcard:hover .wcard-title { color: var(--bright); }
+    .wcard-year {
+      font-size: 0.6rem;
       color: var(--dimmer);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .sq-items a:hover {
-      color: var(--bright);
-    }
-
-    .interests {
-      font-size: 0.7rem;
       letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-top: 3rem;
-      color: var(--dimmer);
-      line-height: 2.8;
     }
 
-    .interests span {
-      margin-right: 1rem;
+    @media (max-width: 640px) {
+      .work-grid { grid-template-columns: repeat(2, 1fr); column-gap: 1.25rem; row-gap: 2rem; }
     }
-
-    .contact-line {
-      font-size: 0.85rem;
-      color: var(--text);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-    }
-
-    .contact-line .dot {
-      color: var(--dim);
-      margin: 0 0.5rem;
-    }
-
-    .foot {
-      margin-top: 5rem;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      color: var(--dimmer);
-    }
-
-    [data-theme="wild"] .name {
-      color: #fff !important;
-    }
-
-    [data-theme="wild"] .bio {
-      color: #aaa;
-    }
-
-    .topbar,
-    .toggle,
-    .photo-block,
-    .block {
-      animation: up 0.45s ease both;
-    }
-
-    .topbar {
-      animation-delay: 0.00s;
-    }
-
-    .photo-block {
-      animation-delay: 0.04s;
-    }
-
-    .toggle {
-      animation-delay: 0.07s;
-    }
-
-    .block:nth-child(4) {
-      animation-delay: 0.10s;
-    }
-
-    .block:nth-child(5) {
-      animation-delay: 0.13s;
-    }
-
-    .block:nth-child(6) {
-      animation-delay: 0.16s;
-    }
-
-    .block:nth-child(7) {
-      animation-delay: 0.19s;
-    }
-
-    .block:nth-child(8) {
-      animation-delay: 0.22s;
-    }
-
-    .block:nth-child(9) {
-      animation-delay: 0.25s;
-    }
-
-    .block:nth-child(10) {
-      animation-delay: 0.28s;
-    }
-
-    /* ── BACKGROUND / CV ── */
-    .cv-entry {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .cv-role {
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: var(--text);
-    }
-
-    .cv-org {
-      font-size: 0.75rem;
-      color: var(--text);
-      letter-spacing: 0.04em;
-    }
-
-    .cv-year {
-      font-size: 0.7rem;
-      color: var(--text);
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .cv-dot {
-      color: var(--dim);
-      margin: 0 0.2rem;
-    }
-
-    .cv-sub {
-      font-size: 0.72rem;
-      color: var(--dim);
-      margin-top: 0.2rem;
-      margin-bottom: 1rem;
-      line-height: 1.6;
-      max-width: 52ch;
-    }
-
-    .cv-projects {
-      margin-top: 0.4rem;
-      margin-bottom: 0.8rem;
-      padding-left: 0.8rem;
-      border-left: 1px solid var(--rule);
-    }
-
-    .cv-project {
-      font-size: 0.8rem;
-      color: var(--dim);
-      margin-bottom: 0.5rem;
-      font-style: italic;
-      letter-spacing: 0.02em;
-    }
-
-    .cv-project .placeholder {
-      opacity: 0.4;
-      font-size: 0.65rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-style: normal;
-    }
-
-    .sec-sub {
-      font-size: 0.58rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--dimmer);
-      margin-bottom: 0.9rem;
-      margin-top: 2rem;
-    }
-
-    .sec-sub:first-of-type {
-      margin-top: 0;
-    }
-
-    .sq-trigger {
-      cursor: pointer;
-      user-select: none;
-      color: var(--dimmer);
-    }
-
-    /* .sq-trigger::before {
-      content: '[ ';
-      color: var(--dim);
-    }
-
-    .sq-trigger::after {
-      content: ' ]';
-      color: var(--dim);
-    } */
-
-    .sq-trigger:hover {
-      color: var(--text);
-      color: var(--bright);
-      letter-spacing: 0.13em;
-    }
-
-    .sq-arrow {
-      display: inline-block;
-      transition: transform 0.3s ease;
-      font-style: normal;
-      margin-right: 0.3em;
-    }
-
-    .sq-trigger.open .sq-arrow {
-      transform: rotate(90deg);
-    }
-
-    .sq-items {
-      display: inline-flex;
-      overflow: hidden;
-      max-width: 0;
-      opacity: 0;
-      transition: max-width 0.55s ease, opacity 0.4s ease;
-      white-space: nowrap;
-      vertical-align: baseline;
-    }
-
-    .sq-items.open {
-      max-width: 600px;
-      opacity: 1;
-    }
-
-    .sq-items span {
-      margin-right: 1rem;
-    }
-
-    @keyframes melt {
-      0% {
-        transform: rotate(0deg) skew(0deg, 0deg) scale(1.00);
-        filter: grayscale(15%) hue-rotate(0deg);
-      }
-
-      15% {
-        transform: rotate(0.3deg) skew(0.4deg, 0.2deg) scale(1.004);
-        filter: grayscale(5%) hue-rotate(40deg);
-      }
-
-      30% {
-        transform: rotate(-0.2deg) skew(-0.2deg, 0.5deg) scale(0.997);
-        filter: grayscale(5%) hue-rotate(100deg);
-      }
-
-      50% {
-        transform: rotate(0.4deg) skew(0.5deg, -0.2deg) scale(1.005);
-        filter: grayscale(5%) hue-rotate(200deg);
-      }
-
-      70% {
-        transform: rotate(-0.3deg) skew(-0.3deg, 0.3deg) scale(0.996);
-        filter: grayscale(5%) hue-rotate(280deg);
-      }
-
-      85% {
-        transform: rotate(0.2deg) skew(0.2deg, -0.4deg) scale(1.002);
-        filter: grayscale(5%) hue-rotate(330deg);
-      }
-
-      100% {
-        transform: rotate(0deg) skew(0deg, 0deg) scale(1.00);
-        filter: grayscale(15%) hue-rotate(360deg);
-      }
-    }
-
-    .photo-float img.melting {
-      animation: melt 45s ease-in-out infinite;
-    }
-
-    @keyframes up {
-      from {
-        opacity: 0;
-        transform: translateY(4px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    @media (max-width: 400px) {
+      .work-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-
 <body>
 
   <div class="topbar">
-    <span class="name">Ahmet Emin Memis</span>
+    <a class="name" href="index.html">Ahmet Emin Memis</a>
     <div class="topbar-right">
       <div class="clock-wrap">
-        <span id="clock" style="font-size:0.8rem;">—</span><span class="night-note" id="nightNote">&nbsp;till
-          morning</span>
+        <span id="clock" style="font-size:0.8rem;">—</span><span class="night-note" id="nightNote">&nbsp;till morning</span>
       </div>
       <div class="theme-switch">
         <span class="th-label" id="themeLabel">dark</span>
         <div class="theme-track" id="themeTrack">
-          <div class="theme-knob" id="themeKnob" data-pos="1"></div>
+          <div class="theme-knob" id="themeKnob"></div>
         </div>
       </div>
     </div>
   </div>
 
+  <div class="contact-inline">
+    <a href="https://github.com/aememis" target="_blank" rel="noopener noreferrer">github</a>
+    <span class="ci-dot">·</span>
+    <a href="https://www.linkedin.com/in/aememis" target="_blank" rel="noopener noreferrer">linkedin</a>
+    <span class="ci-dot">·</span>
+    <a href="mailto:ahmeteminmemis@gmail.com">email</a>
+  </div>
+
   <div class="block name-block clearfix">
-    <div class="photo-float">
-      <img src="mephoto.png" alt="Photo of Me" />
-    </div>
+    <div class="photo-float"><img src="img/me.jpg" alt="Photo of Me" /></div>
     <br><br><br>
-    <div class="title">data scientist<br>music technologist</div>
+    <div class="title">data analyst<br>music technologist</div>
     <div class="role">Oslo, Norway · <span id="age"></span></div>
   </div>
 
@@ -713,64 +246,77 @@
     sometimes separately, sometimes the same thing.<br>
   </div>
 
-  <br>
-  <br>
-
   <div class="toggle">
     <button class="toggle-btn active" data-filter="all">all</button>
     <button class="toggle-btn" data-filter="work">work</button>
     <button class="toggle-btn" data-filter="publications">publications</button>
     <button class="toggle-btn" data-filter="background">background</button>
+    <button class="toggle-btn" data-filter="sides">sides</button>
   </div>
 
-  <!-- WORK -->
+  <!-- WORK GRID -->
   <div class="block" data-id="work">
     <div class="sec">work</div>
-    <a class="item" href="https://hdl.handle.net/10852/120504" target="_blank">
-      <span class="i-title">Evolving sound clouds by moving through it</span> <span class="i-year">2024</span>
-    </a>
-    <a class="item" href="https://mct-master.github.io/interactive-music/2023/12/01/ahmetem-the-hyper-ney.html"
-      target="_blank">
-      <span class="i-title">Hyper-Ney is an enhanced traditional flute</span> <span class="i-year">2023</span>
-    </a>
-    <a class="item" href="https://mct-master.github.io/applied-project/2023/11/27/fabianst-intuitive-robotics.html"
-      target="_blank">
-      <span class="i-title">Painting through gestures with a robot arm</span> <span class="i-year">2023</span>
-    </a>
-    <a class="item" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html"
-      target="_blank">
-      <span class="i-title">A global telematic concert across four continents</span> <span class="i-year">2023</span>
-    </a>
-    <a class="item" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html"
-      target="_blank">
-      <span class="i-title">Jazz Over the Network at 184,000km/h</span> <span class="i-year">2023</span>
-    </a>
-    <a class="item" href="https://mct-master.github.io/motion-capture/2023/05/09/ahmetem-vocal-instrument-motion.html"
-      target="_blank">
-      <span class="i-title">Reshaping your voice through movement</span> <span class="i-year">2023</span>
-    </a>
-    <a class="item" href="https://mct-master.github.io/machine-learning/2023/04/25/ahmetem-whistling-autoencoders.html"
-      target="_blank">
-      <span class="i-title">Can a machine learn to whistle?</span> <span class="i-year">2023</span>
-    </a>
-    <a class="item" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html"
-      target="_blank">
-      <span class="i-title">Engineering a telematic concert behind the scenes</span> <span class="i-year">2022</span>
-    </a>
-    <a class="item"
-      href="https://mct-master.github.io/sound-programming/2022/12/09/kristeic-jackeh-ahmetem-sonification.html"
-      target="_blank">
-      <span class="i-title">Listening to a solar storm</span> <span class="i-year">2022</span>
-    </a>
-    <a class="item" href="https://www.uio.no/ritmo/english/news-and-events/blog/2022/ahmet-emin-memis/" target="_blank">
-      <span class="i-title">Clapping together without trying to</span> <span class="i-year">2022</span>
-    </a>
-    <a class="item" href="piano-project.html">
-      <span class="i-title">RNN learned to play piano from chord sequences</span> <span class="i-year">2021</span>
-    </a>
+    <div class="work-grid">
+
+      <a class="wcard" href="iema.html">
+        <div class="wcard-img"><img src="covers/iema.jpg" alt="Diagram of a motion-capture volume with a figure moving through a point cloud" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Evolving sound clouds by moving through it</div><div class="wcard-year">2024</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/machine-learning/2023/04/25/ahmetem-whistling-autoencoders.html" target="_blank">
+        <div class="wcard-img"><img src="https://mct-master.github.io/assets/image/2023_04_25_ahmetem_vae_whistling_bird.jpeg" alt="" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Can a machine learn to whistle?</div><div class="wcard-year">2023</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/networked-music/2023/03/12/jackeh-ritmo-mid-semester-concert.html" target="_blank">
+        <div class="wcard-img"><img src="covers/jazz.jpg" alt="Jazz band in soundcheck with an engineer riding the faders" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Jazz Over the Network at 184,000km/h</div><div class="wcard-year">2023</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/interactive-music/2023/12/01/ahmetem-the-hyper-ney.html" target="_blank">
+        <div class="wcard-img"><img src="covers/hyperney.jpg" alt="Neyzen by Fausto Zonaro, reworked with a glowing augmented ney" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Hyper-Ney is an enhanced traditional flute</div><div class="wcard-year">2023</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/motion-capture/2023/05/09/ahmetem-vocal-instrument-motion.html" target="_blank">
+        <div class="wcard-img"><img src="https://mct-master.github.io/assets/image/2023_05_09_ahmetem_vocal_mocap_cover.jpg" alt="" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Reshaping your voice through movement</div><div class="wcard-year">2023</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html" target="_blank">
+        <div class="wcard-img"><img src="covers/telematic.jpg" alt="Musicians on a red-lit stage playing to a remote screen" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">A global telematic concert across continents</div><div class="wcard-year">2023</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/applied-project/2023/11/27/fabianst-intuitive-robotics.html" target="_blank">
+        <div class="wcard-img"><img src="covers/arm.jpg" alt="Robot arm painting from captured gestures" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Painting through gestures with a robot arm</div><div class="wcard-year">2023</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/networked-music/2023/05/18/ahmetem-final-nmp-salen.html" target="_blank">
+        <div class="wcard-img"><img src="covers/telematic-eng.jpg" alt="Signal-flow diagram of the LOLA telematic concert setup" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Engineering a telematic concert behind the scenes</div><div class="wcard-year">2022</div></div>
+      </a>
+
+      <a class="wcard" href="https://mct-master.github.io/sound-programming/2022/12/09/kristeic-jackeh-ahmetem-sonification.html" target="_blank">
+        <div class="wcard-img"><img src="https://mct-master.github.io/assets/image/2022_12_09_kristeic_ahmetem_jackeh_dido_in_space_small.jpg" alt="" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Listening to a solar storm</div><div class="wcard-year">2022</div></div>
+      </a>
+
+      <a class="wcard" href="https://www.uio.no/ritmo/english/news-and-events/blog/2022/ahmet-emin-memis/" target="_blank">
+        <div class="wcard-img"><img src="covers/clap.jpg" alt="Overlaid RMS envelopes of an audience clapping" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Clapping together without trying to</div><div class="wcard-year">2022</div></div>
+      </a>
+
+      <a class="wcard" href="piano.html">
+        <div class="wcard-img"><img src="covers/lstm.gif" alt="Glitching morph between portraits of Vivaldi and Beethoven" loading="lazy" onerror="this.parentElement.classList.add('no-img')"></div>
+        <div class="wcard-body"><div class="wcard-title">Teaching an LSTM to compose classical piano</div><div class="wcard-year">2021</div></div>
+      </a>
+
+    </div>
   </div>
 
-  <br>
   <!-- PUBLICATIONS -->
   <div class="block" data-id="publications">
     <div class="sec">publications</div>
@@ -791,121 +337,98 @@
       <div class="p-meta">Conference on Interdisciplinary Musicology · Edinburgh</div>
     </a>
     <a class="pub" href="https://ieeexplore.ieee.org/document/9477952" target="_blank">
-      <div class="p-title">Piano Music Generation with a Text Based Musical Note Representation using LSTM Models <span class="i-year">2021</span></div>
+      <div class="p-title">Music Generation with a Text-Based Musical Note Representation using LSTM Models <span class="i-year">2021</span></div>
       <div class="p-meta">IEEE Signal Processing and Communications Applications · Istanbul</div>
     </a>
   </div>
 
-  <!-- BACKGROUND -->
+  <!-- EDUCATION -->
   <div class="block" data-id="background">
     <div class="sec">education</div>
-
-    <!-- <div class="sec-sub"> </div> -->
-
     <div class="cv-entry">
       <span class="cv-role">MPhil Music, Communication & Technology</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">University of Oslo</span>
+      <span class="cv-dot">·</span><span class="cv-org">University of Oslo</span>
       <span class="cv-year">2025</span>
     </div>
-
     <div class="cv-entry">
       <span class="cv-role">BSc Computer Engineering</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">Ankara University</span>
+      <span class="cv-dot">·</span><span class="cv-org">Ankara University</span>
       <span class="cv-year">2021</span>
     </div>
-
+    <div class="cv-entry">
+      <span class="cv-role">Computer Science (Exchange)</span>
+      <span class="cv-dot">·</span><span class="cv-org">University of Thessaly, Greece</span>
+      <span class="cv-year">2020</span>
+    </div>
   </div>
 
-  <div class="block" data-id="experience">
+  <!-- EXPERIENCE -->
+  <div class="block" data-id="background">
     <div class="sec">experience</div>
 
     <div class="cv-entry">
       <span class="cv-role">Data Analyst</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">Xeneta</span>
-      <span class="cv-year">2022 – present</span>
+      <span class="cv-dot" style="font-size:0.8rem;">·</span>
+      <span class="cv-org">Xeneta, Oslo, Norway</span>
+      <span class="cv-year">Aug 2022 – present</span>
     </div>
-    <div class="cv-sub">LLM-driven structured extraction and classification from unstructured freight data. AI strategy
-      and model evaluation across a fast-moving landscape. Data ingestion pipelines, freight analytics, and data
-      modeling.</div>
+    <div class="cv-prev">(operates as Data Scientist since June 2026, title change pending)</div>
+    <div class="cv-sub">Design and build agentic data-processing pipelines and automation workflows in Python for large-scale freight data, then take them from concept to production with cross-functional teams. Own AI strategy and model evaluation for data ingestion — pipelines that improved ingestion readiness by 17.7%.</div>
 
     <div class="cv-entry">
       <span class="cv-role">Graduate Research Student</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">University of Oslo · RITMO</span>
-      <span class="cv-year">2021 – 2022</span>
+      <span class="cv-dot">·</span><span class="cv-org">RITMO, Oslo, Norway</span>
+      <span class="cv-year">Nov 2021 – Feb 2022</span>
     </div>
-    <div class="cv-sub">Analysis of time-series motion and audio data to study rhythmic synchrony and collective
-      movement dynamics.</div>
-
-    <div class="cv-entry">
-      <span class="cv-role">Machine Learning Trainee</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">Xena Vision</span>
-      <span class="cv-year">2021</span>
-    </div>
-    <div class="cv-sub">Real-time emergency detection from human and vehicle activity using ML and multimedia data.
-    </div>
+    <div class="cv-sub">Led audio and motion signal processing on multi-modal concert recordings: synchronised the two streams, extracted per-event features, and made clap-by-clap synchrony analysis possible across a whole audience. Fed a peer-reviewed study on collective applause.</div>
 
     <div class="cv-entry">
       <span class="cv-role">Student Researcher</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">Ankara University</span>
-      <span class="cv-year">2020 – 2021</span>
+      <span class="cv-dot">·</span><span class="cv-org">Ankara University, Computer Engineering</span>
+      <span class="cv-year">Jul 2020 – Feb 2021</span>
     </div>
-    <div class="cv-sub">Music synthesis with ML: piano generation using deep sequential networks.</div>
+    <div class="cv-sub">Researched and implemented an LSTM deep learning model using a text-based representation for symbolic music generation; co-authored the resulting paper.</div>
 
     <div class="cv-entry">
-      <span class="cv-role">Assistant Software Engineer</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">Softtech</span>
-      <span class="cv-year">2019</span>
+      <span class="cv-role">Machine Learning Intern</span>
+      <span class="cv-dot">·</span><span class="cv-org">Xena Vision, Ankara, Turkey</span>
+      <span class="cv-year">May – Aug 2021</span>
     </div>
-    <div class="cv-sub">Batch applications and data pipelines for banking systems. Database compatibility checks across
-      internal data sources.</div>
+    <div class="cv-sub">Evaluated and benchmarked object-detection models for real-time activity analysis and emergency-detection use cases.</div>
 
     <div class="cv-entry">
-      <span class="cv-role">Video Editor & Documentary Maker</span>
-      <span class="cv-dot">·</span>
-      <span class="cv-org">ARH Media</span>
-      <span class="cv-year">2014 – 2019</span>
+      <span class="cv-role">Assistant Software Developer</span>
+      <span class="cv-dot">·</span><span class="cv-org">IS Bank Softtech, Ankara, Turkey</span>
+      <span class="cv-year">Jul – Aug 2019</span>
     </div>
-    <div class="cv-sub">Production and post-production of televised documentaries and TV shows. Shooting tours across
-      20+ countries.</div>
+    <div class="cv-sub">Built batch quality-assurance software inside a large enterprise engineering organisation, working within established codebases and QA processes at a major national bank.</div>
 
+    <div class="cv-entry">
+      <span class="cv-role">Audio &amp; Video Specialist, Editor</span>
+      <span class="cv-dot">·</span><span class="cv-org">ARH Media &amp; Software, Ankara, Turkey</span>
+      <span class="cv-year">Jun 2016 – Aug 2020</span>
+    </div>
+    <div class="cv-sub">Shot and edited televised documentaries and TV shows with multidisciplinary production crews — directors, camera, sound — under tight broadcast deadlines.</div>
   </div>
 
-  <div class="block interests">
-    <span class="sq-trigger"><span class="sq-arrow">›</span>[ side quests ]</span><span
-      class="sq-items">
-        <a href="#" target="_blank">travels</a>
-        <span>&nbsp;</span>
-        <a href="https://soundcloud.com/aememis/sets" target="_blank">music</a>
-        <span>&nbsp;</span>
-        <a href="https://photos.app.goo.gl/vQowbgvxMNaaEjG69" target="_blank">photographs</a>
-        <span>&nbsp;</span>
-        <a href="https://maps.app.goo.gl/jj9xVgxFDAyMFsWF8" target="_blank">nature</a>
-        <span>&nbsp;</span>
-        <a href="https://photos.app.goo.gl/W7C9y3zQdHRzZVJH9" target="_blank">sailing</a>
-      </span>
-  </div>
-
-  <div class="block contact-line">
-    <a class="bl" target="_blank" rel="noopener noreferrer" href="https://github.com/aememis">github</a>
-    <span class="dot">·</span>
-    <a class="bl" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/aememis">linkedin</a>
-    <span class="dot">·</span>
-    <a class="bl" href="mailto:ahmeteminmemis@gmail.com">email</a>
+  <!-- INTERESTS -->
+  <div class="block sides-block" data-id="sides">
+    <div class="sec">sides</div>
+    <div class="sides-list">
+      <a href="soon.html">thoughts</a>
+      <a href="soon.html">travels</a>
+      <a href="soon.html">music</a>
+      <a href="soon.html">photographs</a>
+      <a href="soon.html">nature</a>
+      <a href="soon.html">sailing</a>
+    </div>
   </div>
 
   <div class="foot">
-    <span id="location-age">Oslo<span id="age"></span></span>
+    <span>Oslo · <span id="age-foot"></span></span>
     <span id="week-seed">—</span>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
     function calculateAge(birthDate) {
       const now = new Date();
@@ -914,431 +437,224 @@
       if (m < 0 || (m === 0 && now.getDate() < birthDate.getDate())) age--;
       return age;
     }
-    document.addEventListener('DOMContentLoaded', function () {
-      const birthDate = new Date(1998, 2, 26);
-      document.getElementById('age').textContent = calculateAge(birthDate);
+    document.addEventListener('DOMContentLoaded', () => {
+      const age = calculateAge(new Date(1998, 2, 26));
+      document.getElementById('age').textContent = age;
+      document.getElementById('age-foot').textContent = age;
     });
 
-    function pad(n) { return String(n).padStart(2, '0'); }
-
+    function pad(n) { return String(n).padStart(2,'0'); }
     function tick() {
-      const now = new Date();
-      const h = now.getHours();
-      const m = now.getMinutes();
-      const s = now.getSeconds();
-      const clockEl = document.getElementById('clock');
-      const nightNote = document.getElementById('nightNote');
+      const now = new Date(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+      const clockEl = document.getElementById('clock'), nightNote = document.getElementById('nightNote');
       if (h >= 20 || h < 8) {
         const next8 = new Date(now);
-        if (h >= 20) next8.setDate(next8.getDate() + 1);
-        next8.setHours(8, 0, 0, 0);
-        const secs = Math.floor((next8 - now) / 1000);
-        const ch = Math.floor(secs / 3600);
-        const cm = Math.floor((secs % 3600) / 60);
-        const cs = secs % 60;
-        clockEl.textContent = `${pad(ch)}:${pad(cm)}:${pad(cs)}`;
+        if (h >= 20) next8.setDate(next8.getDate()+1);
+        next8.setHours(8,0,0,0);
+        const secs = Math.floor((next8-now)/1000);
+        clockEl.textContent = `${pad(Math.floor(secs/3600))}:${pad(Math.floor((secs%3600)/60))}:${pad(secs%60)}`;
         nightNote.classList.add('visible');
       } else {
         clockEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
         nightNote.classList.remove('visible');
       }
-      const start = new Date(now.getFullYear(), 0, 0);
-      const week = Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
-      // document.getElementById('week-seed').textContent = `${now.getFullYear()}-W${pad(week)}`;
       document.getElementById('week-seed').textContent = `${now.getFullYear()}`;
     }
     tick(); setInterval(tick, 1000);
 
-    // ── THEME TOGGLE — pendulum ──
-    const themes = ['light', 'dark', 'wild'];
-    const labels = ['light', 'dark', 'wtf?!'];
-    const knobPositions = [3, 19, 35];
-    let themeIdx = 1;
-    let direction = -1;
-
+    // ── THEME ──
+    const themes = ['light','dark','wild'], labels = ['light','dark','wtf?!'], knobPositions = [3,19,35];
+    let themeIdx = 1, direction = -1;
     const track = document.getElementById('themeTrack');
-    const knob = document.getElementById('themeKnob');
+    const knob  = document.getElementById('themeKnob');
     const label = document.getElementById('themeLabel');
 
-    // ── WTF SOUNDSCAPE ──
-    let audioCtx = null;
-    let soundNodes = [];
-    let toneTimeouts = [];
-
+    // ── SOUNDSCAPE ──
+    let audioCtx = null, soundNodes = [], toneTimeouts = [];
     function buildReverb(ctx) {
-      const len = ctx.sampleRate * 4;
-      const buf = ctx.createBuffer(2, len, ctx.sampleRate);
-      for (let c = 0; c < 2; c++) {
-        const d = buf.getChannelData(c);
-        for (let i = 0; i < len; i++) {
-          d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.5);
-        }
-      }
-      const conv = ctx.createConvolver();
-      conv.buffer = buf;
-      return conv;
+      const len = ctx.sampleRate*4, buf = ctx.createBuffer(2,len,ctx.sampleRate);
+      for (let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.5);}
+      const conv=ctx.createConvolver();conv.buffer=buf;return conv;
     }
-
     function startSoundscape() {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const master = audioCtx.createGain();
-      master.gain.setValueAtTime(0.0, audioCtx.currentTime);
-      master.gain.linearRampToValueAtTime(0.22, audioCtx.currentTime + 5);
-      master.connect(audioCtx.destination);
-      soundNodes.push(master);
-
-      const reverb = buildReverb(audioCtx);
-      reverb.connect(master);
-      soundNodes.push(reverb);
-
-      const dryGain = audioCtx.createGain();
-      dryGain.gain.value = 0.15;
-      dryGain.connect(master);
-
-      const bufSize = audioCtx.sampleRate * 2;
-      const noiseBuf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
-      const nd = noiseBuf.getChannelData(0);
-      for (let i = 0; i < bufSize; i++) nd[i] = Math.random() * 2 - 1;
-
-      const noiseSource = audioCtx.createBufferSource();
-      noiseSource.buffer = noiseBuf;
-      noiseSource.loop = true;
-
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.value = 300;
-      filter.Q.value = 1.2;
-
-      const lfo = audioCtx.createOscillator();
-      lfo.frequency.value = 0.025;
-      const lfoGain = audioCtx.createGain();
-      lfoGain.gain.value = 70;
-      lfo.connect(lfoGain);
-      lfoGain.connect(filter.frequency);
-      lfo.start();
-
-      const windGain = audioCtx.createGain();
-      windGain.gain.value = 0.18;
-
-      noiseSource.connect(filter);
-      filter.connect(windGain);
-      windGain.connect(reverb);
-      windGain.connect(dryGain);
-      noiseSource.start();
-      soundNodes.push(noiseSource, filter, lfo, lfoGain, windGain, dryGain);
-
-      const baseFreqs = [1840, 2300, 3100, 2700, 1600, 4100, 3600];
-
-      function spawnTone() {
-        if (!audioCtx || audioCtx.state === 'closed') return;
-
-        const next = (10 + Math.random() * 20) * 1000;
-        const t = setTimeout(spawnTone, next);
-        toneTimeouts.push(t);
-
-        if (Math.random() < 0.3) return;
-
-        const freq = baseFreqs[Math.floor(Math.random() * baseFreqs.length)]
-          + (Math.random() - 0.5) * 180;
-        const now = audioCtx.currentTime;
-
-        const A = 0.4 + Math.random() * 0.6;
-        const D = 0.2 + Math.random() * 0.3;
-        const SL = 0.3 + Math.random() * 0.3;
-        const S = 1.0 + Math.random() * 1.5;
-        const R = 2.0 + Math.random() * 2.0;
-        const peak = 0.008 + Math.random() * 0.007;
-        const dur = A + D + S + R;
-
-        const osc = audioCtx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now);
-        osc.frequency.linearRampToValueAtTime(freq + (Math.random() - 0.5) * 50, now + dur);
-
-        const env = audioCtx.createGain();
-        env.gain.setValueAtTime(0, now);
-        env.gain.linearRampToValueAtTime(peak, now + A);
-        env.gain.linearRampToValueAtTime(peak * SL, now + A + D);
-        env.gain.setValueAtTime(peak * SL, now + A + D + S);
-        env.gain.linearRampToValueAtTime(0, now + A + D + S + R);
-
-        osc.connect(env);
-        env.connect(reverb);
-        osc.start(now);
-        osc.stop(now + dur + 0.05);
+      audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      const master=audioCtx.createGain();master.gain.setValueAtTime(0,audioCtx.currentTime);master.gain.linearRampToValueAtTime(0.22,audioCtx.currentTime+5);master.connect(audioCtx.destination);soundNodes.push(master);
+      const reverb=buildReverb(audioCtx);reverb.connect(master);soundNodes.push(reverb);
+      const dryGain=audioCtx.createGain();dryGain.gain.value=0.15;dryGain.connect(master);
+      const bufSize=audioCtx.sampleRate*2,noiseBuf=audioCtx.createBuffer(1,bufSize,audioCtx.sampleRate),nd=noiseBuf.getChannelData(0);
+      for(let i=0;i<bufSize;i++)nd[i]=Math.random()*2-1;
+      const noiseSource=audioCtx.createBufferSource();noiseSource.buffer=noiseBuf;noiseSource.loop=true;
+      const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=300;filter.Q.value=1.2;
+      const lfo=audioCtx.createOscillator();lfo.frequency.value=0.025;
+      const lfoGain=audioCtx.createGain();lfoGain.gain.value=70;
+      lfo.connect(lfoGain);lfoGain.connect(filter.frequency);lfo.start();
+      const windGain=audioCtx.createGain();windGain.gain.value=0.18;
+      noiseSource.connect(filter);filter.connect(windGain);windGain.connect(reverb);windGain.connect(dryGain);noiseSource.start();
+      soundNodes.push(noiseSource,filter,lfo,lfoGain,windGain,dryGain);
+      const baseFreqs=[1840,2300,3100,2700,1600,4100,3600];
+      function spawnTone(){
+        if(!audioCtx||audioCtx.state==='closed')return;
+        toneTimeouts.push(setTimeout(spawnTone,(10+Math.random()*20)*1000));
+        if(Math.random()<0.3)return;
+        const freq=baseFreqs[Math.floor(Math.random()*baseFreqs.length)]+(Math.random()-0.5)*180;
+        const now=audioCtx.currentTime,A=0.4+Math.random()*0.6,D=0.2+Math.random()*0.3,SL=0.3+Math.random()*0.3,S=1.0+Math.random()*1.5,R=2.0+Math.random()*2.0,peak=0.008+Math.random()*0.007,dur=A+D+S+R;
+        const osc=audioCtx.createOscillator();osc.type='sine';osc.frequency.setValueAtTime(freq,now);osc.frequency.linearRampToValueAtTime(freq+(Math.random()-0.5)*50,now+dur);
+        const env=audioCtx.createGain();env.gain.setValueAtTime(0,now);env.gain.linearRampToValueAtTime(peak,now+A);env.gain.linearRampToValueAtTime(peak*SL,now+A+D);env.gain.setValueAtTime(peak*SL,now+A+D+S);env.gain.linearRampToValueAtTime(0,now+A+D+S+R);
+        osc.connect(env);env.connect(reverb);osc.start(now);osc.stop(now+dur+0.05);
       }
-
-      [0, 8000, 18000, 32000].forEach(delay => {
-        const t = setTimeout(spawnTone, delay);
-        toneTimeouts.push(t);
-      });
+      [0,8000,18000,32000].forEach(d=>toneTimeouts.push(setTimeout(spawnTone,d)));
+    }
+    function stopSoundscape(){
+      toneTimeouts.forEach(t=>clearTimeout(t));toneTimeouts=[];
+      if(audioCtx){soundNodes.forEach(n=>{try{n.disconnect();}catch(e){}});soundNodes=[];audioCtx.close();audioCtx=null;}
     }
 
-    function stopSoundscape() {
-      toneTimeouts.forEach(t => clearTimeout(t));
-      toneTimeouts = [];
-      if (audioCtx) {
-        soundNodes.forEach(n => { try { n.disconnect(); } catch (e) { } });
-        soundNodes = [];
-        audioCtx.close();
-        audioCtx = null;
+    // ── POINT CLOUD ──
+    let cloudDots=[], cloudFrame=null;
+    const cloudWords=["data","signal","frequency","oscillator","synthesizer","rhythm","motion","network","telematic","latency","pipeline","model","cluster","noise","filter","extraction","inference","chord","resonance","gesture","instrument","timbre","feedback","archive","pattern","threshold","pulse","mapping","sensor","spectrum","dropout","training","encoding","harmony","feature","artifact","drift","tempo","waveform","activation","midi","corpus","embedding","transient","decay","node","reverb","onset","trajectory","variance"];
+    function spawnCloud(){
+      const container=document.createElement('div');container.id='point-cloud';
+      container.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;';
+      for(let i=0;i<cloudWords.length;i++){
+        const dot=document.createElement('div');
+        const size=5+Math.random()*7,x=Math.random()*100,y=Math.random()*100;
+        dot.style.cssText=`position:absolute;left:${x}vw;top:${y}vh;width:${size}px;height:${size}px;border-radius:50%;background:hsl(${Math.random()*360},60%,65%);opacity:0;pointer-events:all;cursor:default;transition:opacity 0.2s,transform 0.2s;`;
+        setTimeout(()=>{dot.style.transition='opacity 1.8s ease,transform 0.2s';dot.style.opacity='0.18';setTimeout(()=>{dot.style.transition='opacity 0.2s,transform 0.2s';},1900);},i*35);
+        dot._dx=0;dot._dy=0;dot._vx=0;dot._vy=0;dot._ox=x;dot._oy=y;
+        dot._word=cloudWords[i%cloudWords.length];dot._size=size;dot._lastPlayed=0;dot._hovered=false;
+        container.appendChild(dot);cloudDots.push(dot);
       }
-    }
-
-    // ── WTF POINT CLOUD ──
-    let cloudDots = [];
-    let cloudFrame = null;
-
-    function spawnCloud() {
-      const container = document.createElement('div');
-      container.id = 'point-cloud';
-      container.style.cssText = `
-        position: fixed; inset: 0; pointer-events: none; z-index: 50; overflow: hidden;
-      `;
-
-      const cloudWords = [
-        "data", "signal", "frequency", "oscillator", "synthesizer",
-        "rhythm", "motion", "network", "telematic", "latency",
-        "pipeline", "model", "cluster", "noise", "filter",
-        "extraction", "inference", "chord", "resonance", "gesture",
-        "instrument", "timbre", "feedback", "archive", "pattern",
-        "threshold", "pulse", "mapping", "sensor", "spectrum",
-        "dropout", "training", "encoding", "harmony", "feature",
-        "artifact", "drift", "tempo", "waveform", "activation",
-        "midi", "corpus", "embedding", "transient", "decay",
-        "node", "reverb", "onset", "trajectory", "variance"
-      ];
-
-      for (let i = 0; i < cloudWords.length; i++) {
-        const dot = document.createElement('div');
-        const size = 5 + Math.random() * 7;
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const word = cloudWords[Math.floor(Math.random() * cloudWords.length)];
-
-        dot.dataset.word = word;
-        dot.style.cssText = `
-          position: absolute;
-          left: ${x}vw; top: ${y}vh;
-          width: ${size}px; height: ${size}px;
-          border-radius: 50%;
-          background: hsl(${Math.random() * 360}, 60%, 65%);
-          opacity: 0;
-          pointer-events: all;
-          cursor: default;
-          transition: opacity 0.2s, transform 0.2s;
-        `;
-        // staggered fade-in over ~2s
-        setTimeout(() => {
-          dot.style.transition = 'opacity 1.8s ease, transform 0.2s';
-          dot.style.opacity = '0.18';
-          setTimeout(() => { dot.style.transition = 'opacity 0.2s, transform 0.2s'; }, 1900);
-        }, i * 35);
-
-        // drift state
-        dot._dx = 0; dot._dy = 0;
-        dot._vx = 0; dot._vy = 0;
-        dot._ox = x; dot._oy = y; // origin in vw/vh
-
-        dot._word = cloudWords[i % cloudWords.length];
-        dot._size = size;
-        dot._lastPlayed = 0;
-        dot._hovered = false;
-
-        container.appendChild(dot);
-        cloudDots.push(dot);
-      }
-
       document.body.appendChild(container);
-
-      let cloudMX = -9999, cloudMY = -9999;
-      document.addEventListener('mousemove', (e) => { cloudMX = e.clientX; cloudMY = e.clientY; });
-
-      // animate dots + proximity hover
-      function driftFrame() {
-        cloudDots.forEach(d => {
-          d._vx += (Math.random() - 0.5) * 0.004;
-          d._vy += (Math.random() - 0.5) * 0.003;
-          const spd = Math.sqrt(d._vx * d._vx + d._vy * d._vy);
-          if (spd > 0.12) { d._vx *= 0.12 / spd; d._vy *= 0.12 / spd; }
-          d._vx -= d._dx * 0.0004;
-          d._vy -= d._dy * 0.0004;
-          d._dx += d._vx;
-          d._dy += d._vy;
-          d.style.left = `calc(${d._ox}vw + ${d._dx.toFixed(2)}px)`;
-          d.style.top = `calc(${d._oy}vh + ${d._dy.toFixed(2)}px)`;
-
-          // proximity-based hover (more reliable than mouseenter on moving elements)
-          const rect = d.getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const dist = Math.sqrt((cloudMX - cx) ** 2 + (cloudMY - cy) ** 2);
-          const threshold = d._size + 16;
-
-          if (dist < threshold && !d._hovered) {
-            d._hovered = true;
-            d.style.opacity = '0.8';
-            d.style.transform = 'scale(1.7)';
-            const now = Date.now();
-            if (now - d._lastPlayed > 1500) {
-              d._lastPlayed = now;
-              const a = new Audio(`audio/${d._word}.mp3`);
-              a.volume = 0.08 + Math.random() * 0.12;
-              a.play().catch(() => { });
-            }
-          } else if (dist >= threshold && d._hovered) {
-            d._hovered = false;
-            d.style.opacity = '0.18';
-            d.style.transform = 'scale(1)';
-          }
+      let cloudMX=-9999,cloudMY=-9999;
+      document.addEventListener('mousemove',e=>{cloudMX=e.clientX;cloudMY=e.clientY;});
+      function driftFrame(){
+        cloudDots.forEach(d=>{
+          d._vx+=(Math.random()-0.5)*0.004;d._vy+=(Math.random()-0.5)*0.003;
+          const spd=Math.sqrt(d._vx*d._vx+d._vy*d._vy);
+          if(spd>0.12){d._vx*=0.12/spd;d._vy*=0.12/spd;}
+          d._vx-=d._dx*0.0004;d._vy-=d._dy*0.0004;d._dx+=d._vx;d._dy+=d._vy;
+          d.style.left=`calc(${d._ox}vw + ${d._dx.toFixed(2)}px)`;
+          d.style.top=`calc(${d._oy}vh + ${d._dy.toFixed(2)}px)`;
+          const rect=d.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+          const dist=Math.sqrt((cloudMX-cx)**2+(cloudMY-cy)**2),threshold=d._size+16;
+          if(dist<threshold&&!d._hovered){
+            d._hovered=true;d.style.opacity='0.8';d.style.transform='scale(1.7)';
+            const now=Date.now();
+            if(now-d._lastPlayed>1500){d._lastPlayed=now;const a=new Audio(`audio/${d._word}.mp3`);a.volume=0.08+Math.random()*0.12;a.play().catch(()=>{});}
+          } else if(dist>=threshold&&d._hovered){d._hovered=false;d.style.opacity='0.18';d.style.transform='scale(1)';}
         });
-        cloudFrame = requestAnimationFrame(driftFrame);
+        cloudFrame=requestAnimationFrame(driftFrame);
       }
-      cloudFrame = requestAnimationFrame(driftFrame);
+      cloudFrame=requestAnimationFrame(driftFrame);
+    }
+    function destroyCloud(){
+      if(cloudFrame){cancelAnimationFrame(cloudFrame);cloudFrame=null;}cloudDots=[];
+      const c=document.getElementById('point-cloud');if(!c)return;
+      c.querySelectorAll('div').forEach(d=>{d.style.transition='opacity 1.8s ease';d.style.opacity='0';});
+      setTimeout(()=>c.remove(),2000);
     }
 
-    function destroyCloud() {
-      if (cloudFrame) { cancelAnimationFrame(cloudFrame); cloudFrame = null; }
-      cloudDots = [];
-      const c = document.getElementById('point-cloud');
-      if (!c) return;
-      // fade all dots out, then remove
-      c.querySelectorAll('div').forEach(d => {
-        d.style.transition = 'opacity 1.8s ease';
-        d.style.opacity = '0';
-      });
-      setTimeout(() => c.remove(), 2000);
-    }
-    let wildFrame = null;
-    const wildOffsets = new Map();
-
-    function applyWildColors() {
+    // ── RAINBOW + DIZZY ──
+    let wildFrame=null;
+    const wildOffsets=new Map();
+    function applyWildColors(){
       document.querySelector('.photo-float img')?.classList.add('melting');
-      const els = document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests .sq-trigger, .cv-role, .name, .title, .bio');
-      els.forEach((el) => {
-        if (!wildOffsets.has(el)) {
-          wildOffsets.set(el, {
-            hue: Math.random() * 360,
-            speed: 0.04 + Math.random() * 0.12,
-            dir: Math.random() > 0.5 ? 1 : -1,
-            dx: 0, dy: 0,
-            vx: 0, vy: 0,
-          });
-        }
-        el.style.display = 'inline-block';
-        el.style.position = 'relative';
+      const els=document.querySelectorAll('.item .i-title,.pub .p-title,.cv-role,.name,.title,.bio');
+      els.forEach(el=>{
+        if(!wildOffsets.has(el))wildOffsets.set(el,{hue:Math.random()*360,speed:0.04+Math.random()*0.12,dir:Math.random()>0.5?1:-1,dx:0,dy:0,vx:0,vy:0});
+        el.style.display='inline-block';el.style.position='relative';
       });
-
-      const bgState = {
-        hue: Math.random() * 360,
-        speed: 0.08 + Math.random() * 0.12,
-        dir: Math.random() > 0.5 ? 1 : -1
-      };
-
-      function frame() {
-        els.forEach(el => {
-          const s = wildOffsets.get(el);
-          // color
-          s.hue = (s.hue + s.speed * s.dir + 360) % 360;
-          el.style.color = `hsl(${s.hue}, 85%, 72%)`;
-          el.style.transition = 'none';
-          // independent random walk — tiny random nudge each frame
-          s.vx += (Math.random() - 0.5) * 0.0018;
-          s.vy += (Math.random() - 0.5) * 0.0012;
-          // soft speed cap
-          const spd = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
-          if (spd > 0.06) { s.vx *= 0.06 / spd; s.vy *= 0.06 / spd; }
-          // gentle pull back toward origin so they don't drift away
-          s.vx -= s.dx * 0.0003;
-          s.vy -= s.dy * 0.0003;
-          s.dx += s.vx;
-          s.dy += s.vy;
-          el.style.transform = `translate(${s.dx.toFixed(2)}px, ${s.dy.toFixed(2)}px)`;
+      const bgState={hue:Math.random()*360,speed:0.08+Math.random()*0.12,dir:Math.random()>0.5?1:-1};
+      function frame(){
+        els.forEach(el=>{
+          const s=wildOffsets.get(el);
+          s.hue=(s.hue+s.speed*s.dir+360)%360;el.style.color=`hsl(${s.hue},85%,72%)`;el.style.transition='none';
+          s.vx+=(Math.random()-0.5)*0.0018;s.vy+=(Math.random()-0.5)*0.0012;
+          const spd=Math.sqrt(s.vx*s.vx+s.vy*s.vy);if(spd>0.06){s.vx*=0.06/spd;s.vy*=0.06/spd;}
+          s.vx-=s.dx*0.0003;s.vy-=s.dy*0.0003;s.dx+=s.vx;s.dy+=s.vy;
+          el.style.transform=`translate(${s.dx.toFixed(2)}px,${s.dy.toFixed(2)}px)`;
         });
-
-        const first = wildOffsets.get(els[0]);
-        if (first) knob.style.background = `hsl(${first.hue}, 85%, 72%)`;
-
-        bgState.hue = (bgState.hue + bgState.speed * bgState.dir + 360) % 360;
-        document.documentElement.style.setProperty('--bg', `hsl(${bgState.hue}, 35%, 10%)`);
-        document.documentElement.style.setProperty('--toggle-active-bg', `hsl(${bgState.hue}, 35%, 13%)`);
-
-        wildFrame = requestAnimationFrame(frame);
+        const first=wildOffsets.get(els[0]);if(first)knob.style.background=`hsl(${first.hue},85%,72%)`;
+        bgState.hue=(bgState.hue+bgState.speed*bgState.dir+360)%360;
+        document.documentElement.style.setProperty('--bg',`hsl(${bgState.hue},35%,10%)`);
+        document.documentElement.style.setProperty('--toggle-active-bg',`hsl(${bgState.hue},35%,13%)`);
+        wildFrame=requestAnimationFrame(frame);
       }
-
-      wildFrame = requestAnimationFrame(frame);
+      wildFrame=requestAnimationFrame(frame);
     }
-
-    function clearWildColors() {
+    function clearWildColors(){
       document.querySelector('.photo-float img')?.classList.remove('melting');
-      if (wildFrame) { cancelAnimationFrame(wildFrame); wildFrame = null; }
-      wildOffsets.clear();
-      document.querySelectorAll('.item .i-title, .item-plain .i-title, .pub .p-title, .interests .sq-trigger, .cv-role, .name, .title, .bio').forEach(el => {
-        el.style.color = '';
-        el.style.transition = '';
-        el.style.transform = '';
-        el.style.position = '';
-        el.style.display = '';
+      if(wildFrame){cancelAnimationFrame(wildFrame);wildFrame=null;}wildOffsets.clear();
+      document.querySelectorAll('.item .i-title,.pub .p-title,.cv-role,.name,.title,.bio').forEach(el=>{
+        el.style.color='';el.style.transition='';el.style.transform='';el.style.position='';el.style.display='';
       });
-      knob.style.background = '';
+      knob.style.background='';
       document.documentElement.style.removeProperty('--bg');
       document.documentElement.style.removeProperty('--toggle-active-bg');
     }
 
-    function setTheme(idx) {
-      themeIdx = idx;
-      document.documentElement.setAttribute('data-theme', themes[idx]);
-      label.textContent = labels[idx];
-      knob.style.left = knobPositions[idx] + 'px';
-      if (idx === 2) { applyWildColors(); startSoundscape(); spawnCloud(); }
-      else { clearWildColors(); stopSoundscape(); destroyCloud(); }
+    function setTheme(idx){
+      themeIdx=idx;
+      document.documentElement.setAttribute('data-theme',themes[idx]);
+      label.textContent=labels[idx];knob.style.left=knobPositions[idx]+'px';
+      if(idx===2){applyWildColors();startSoundscape();spawnCloud();}
+      else{clearWildColors();stopSoundscape();destroyCloud();}
     }
-
-    function stepTheme() {
-      let next = themeIdx + direction;
-      if (next > 2) { direction = -1; next = themeIdx + direction; }
-      if (next < 0) { direction = 1; next = themeIdx + direction; }
+    function stepTheme(){
+      let next=themeIdx+direction;
+      if(next>2){direction=-1;next=themeIdx+direction;}
+      if(next<0){direction=1;next=themeIdx+direction;}
       setTheme(next);
     }
-
     setTheme(1);
-    setTimeout(() => setTheme(2), 180000); // auto-switch to WTF mode after 3 minutes
-    track.addEventListener('click', stepTheme);
+    track.addEventListener('click',stepTheme);
 
-    // ── FILTER TOGGLE ──
-    document.querySelectorAll('.toggle-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    // ── FILTER ──
+    // rolls the tab bar up to the top after filtering, so it's visible that
+    // the thing below just changed
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function glideTo(targetY, duration=700){
+      const startY = window.pageYOffset;
+      const dy = targetY - startY;
+      if (Math.abs(dy) < 2) return;
+      if (reduceMotion) { window.scrollTo(0, targetY); return; }
+      let t0 = null;
+      function step(ts){
+        if (t0 === null) t0 = ts;
+        const t = Math.min((ts - t0) / duration, 1);
+        const e = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+        window.scrollTo(0, startY + dy * e);
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    const toggleBar = document.querySelector('.toggle');
+    document.querySelectorAll('.toggle-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
-        const f = btn.dataset.filter;
-        document.querySelectorAll('.block[data-id]').forEach(block => {
-          block.classList.toggle('hidden', f !== 'all' && block.dataset.id !== f);
+        const f=btn.dataset.filter;
+        document.querySelectorAll('.block[data-id]').forEach(block=>{
+          block.classList.toggle('hidden',f!=='all'&&block.dataset.id!==f);
         });
+        const y = toggleBar.getBoundingClientRect().top + window.pageYOffset - 32;
+        glideTo(Math.max(0, y));
       });
     });
 
-    // ── SIDE QUESTS TOGGLE ──
-    document.querySelector('.sq-trigger').addEventListener('click', () => {
-      document.querySelector('.sq-trigger').classList.toggle('open');
-      document.querySelector('.sq-items').classList.toggle('open');
-    });
-
     // ── WEEK DRIFT ──
-    function sr(s) { let x = Math.sin(s + 1) * 10000; return x - Math.floor(x); }
-    function applyDrift() {
-      const now = new Date();
-      const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 1));
-      const week = Math.ceil(((now - start) / 86400000 + start.getUTCDay() + 1) / 7);
-      const S = now.getUTCFullYear() * 100 + week;
-      document.querySelectorAll('.block').forEach((el, i) => {
-        if (el.classList.contains('bio')) return;
-        const mb = 24 + sr(S + i * 9.1) * 22;
-        el.style.marginBottom = mb.toFixed(1) + 'px';
+    function sr(s){let x=Math.sin(s+1)*10000;return x-Math.floor(x);}
+    function applyDrift(){
+      const now=new Date(),start=new Date(Date.UTC(now.getUTCFullYear(),0,1));
+      const week=Math.ceil(((now-start)/86400000+start.getUTCDay()+1)/7);
+      const S=now.getUTCFullYear()*100+week;
+      document.querySelectorAll('.block').forEach((el,i)=>{
+        if(el.classList.contains('bio'))return;
+        el.style.marginBottom=(24+sr(S+i*9.1)*22).toFixed(1)+'px';
       });
     }
     applyDrift();
   </script>
-
 </body>
-
 </html>

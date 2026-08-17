@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IEMA — Ahmet Emin Memis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;1,14..32,300&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #14120e; --text: #8a8680; --bright: #d0c8b8;
+      --dim: #6a6258; --dimmer: #5c5248; --rule: #2a2420;
+      --bio: #60584e; --toggle-active-bg: #1e1c18; --mat: #1a1814;
+    }
+    [data-theme="light"] {
+      --bg: #f0ece2; --text: #403b33; --bright: #1a1814;
+      --dim: #b0a898; --dimmer: #9c9689; --rule: #ddd8cc;
+      --bio: #9a9288; --toggle-active-bg: #e4e0d4; --mat: #e7e3d8;
+    }
+    * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+    html { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.65; }
+    body { max-width: 750px; margin: 0 auto; padding: 3.5rem 2rem 8rem; }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--bright); }
+    .bl::before { content: '[ '; color: var(--dim); transition: color 0.15s, letter-spacing 0.15s; }
+    .bl::after  { content: ' ]'; color: var(--dim); transition: color 0.15s, letter-spacing 0.15s; }
+    a.bl:hover { color: var(--bright); }
+    a.bl:hover::before, a.bl:hover::after { color: var(--text); letter-spacing: 0.06em; }
+
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem; font-size: 0.95rem; color: var(--dim); }
+    .topbar .name { font-weight: 400; color: var(--bright); font-size: 1.1rem; line-height: 1; }
+    .back-link { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
+    .back-link:hover { color: var(--text); }
+
+    .title { font-size: 1.6rem; font-weight: 400; color: var(--bright); line-height: 1.3; margin: 3rem 0 1.2rem; }
+    .project-meta { font-size: 0.8rem; color: var(--dim); letter-spacing: 0.05em; line-height: 1.8; margin-bottom: 2.5rem; }
+
+    .cover { margin: 2.5rem 0 3rem; border: 1px solid var(--rule); background: var(--mat); padding: 1.6rem; }
+    .cover img { width: 100%; display: block; filter: grayscale(20%) brightness(0.9); }
+
+    /* the opening image — set larger and italic, this is the part that should land first */
+    .lede { font-size: 1.05rem; color: var(--bio); font-style: italic; line-height: 2; margin-bottom: 2.5rem; max-width: 46ch; }
+
+    .section { margin-bottom: 2.8rem; }
+    .section-title { font-size: 0.78rem; color: var(--dim); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 1.1rem; }
+    .section-text { font-size: 0.95rem; color: var(--text); line-height: 1.85; margin-bottom: 1.1rem; }
+    .section-text strong { color: var(--bright); font-weight: 400; }
+
+    .links-section { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
+    .link-item { display: inline-block; margin-right: 1.5rem; margin-bottom: 0.8rem; font-size: 0.9rem; }
+
+    @keyframes up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .topbar, .title, .project-meta, .lede, .cover, .section { animation: up 0.45s ease both; }
+    .title { animation-delay: 0.05s; } .project-meta { animation-delay: 0.08s; }
+    .lede { animation-delay: 0.12s; } .cover { animation-delay: 0.16s; }
+    .section:nth-of-type(1) { animation-delay: 0.20s; }
+    .section:nth-of-type(2) { animation-delay: 0.24s; }
+    .section:nth-of-type(3) { animation-delay: 0.28s; }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <a class="name" href="index.html">Ahmet Emin Memis</a>
+  </div>
+
+  <a href="index.html" class="back-link">← back</a>
+
+  <h1 class="title">IEMA: Exploring Complex Data Spaces with Body-Motion Interaction</h1>
+  <div class="project-meta">
+    MPhil thesis · Music, Communication and Technology<br>
+    University of Oslo · 2025
+  </div>
+
+  <p class="lede">
+    A cloud of sound samples, laid out in a room. You walk into it the way you'd walk into a forest,
+    and you hear whatever is near you. As you wander, the cloud grows new sounds in the places you
+    keep returning to.
+  </p>
+
+  <div class="cover">
+    <img src="covers/iema.jpg" alt="A motion-capture volume with a figure moving through a cloud of points">
+  </div>
+
+  <div class="section">
+    <div class="section-title">High-dimensional audio</div>
+    <p class="section-text">
+      A sound corpus is a <strong>high-dimensional data space</strong>. Every sample carries dozens
+      of measurable qualities at once, and a screen can hold two or three of them at a time. IEMA
+      moves the interface into a room. A body walking through space produces a continuous,
+      high-bandwidth signal, and <strong>motion capture turns that into the query</strong>.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Audio signal processing</div>
+    <p class="section-text">
+      Each sample is analysed into a feature vector. Spectral and temporal descriptors come out
+      through filtering and Fourier analysis, and those numbers decide where a sound sits relative
+      to its neighbours. Distance in the room corresponds to <strong>distance in the audio
+      features</strong>, so stepping toward a brighter region gives you brighter material. The
+      geometry is built out of the sound itself.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Real time</div>
+    <p class="section-text">
+      Motion tracking, feature analysis, the evolutionary engine and the synthesis layer all run at
+      once, and they all have to agree on the same moment. A slow path anywhere becomes latency you
+      can feel in your feet. Getting the timing to hold was most of the work. What came out of it is
+      <strong>open-source software</strong> with a live interactive audio tool at its centre.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The cloud evolves</div>
+    <p class="section-text">
+      Underneath is an <strong>interactive evolutionary algorithm</strong>. New sounds are bred from
+      the ones you have been spending time near, and the regions you leave alone thin out. It has
+      the shape of a recommender system: infer preference from behaviour, then serve more of it.
+      Here the behaviour is <strong>where your body went</strong>. You express taste by walking
+      around.
+    </p>
+    <p class="section-text">
+      This was my MPhil thesis at the University of Oslo. It extends <em>IEMI</em>, an immersive
+      motion-controlled installation published at the Sound and Music Computing Conference in 2024.
+    </p>
+  </div>
+
+  <div class="links-section">
+    <div class="section-title">Read it</div>
+    <div class="link-item"><a class="bl" href="https://hdl.handle.net/10852/120504" target="_blank" rel="noopener noreferrer">Thesis</a></div>
+    <div class="link-item"><a class="bl" href="https://zenodo.org/records/14339258" target="_blank" rel="noopener noreferrer">IEMI paper · SMC 2024</a></div>
+    <div class="link-item"><a class="bl" href="https://github.com/aememis" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+  </div>
+
+</body>
+
+</html>
